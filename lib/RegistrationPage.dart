@@ -1,6 +1,9 @@
 import 'package:counter_app/loginpage.dart';
+import 'package:counter_app/model/provider.model.dart';
 import 'package:counter_app/product.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationDemopage extends StatefulWidget {
   @override
@@ -35,7 +38,27 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
   ];
 
   @override
+  void initState(){
+    super.initState();
+    final userprovider = context.read<UserProvider>();
+    firstName.text = userprovider.firstName;
+    lastName.text = userprovider.lastName;
+    emailAddress.text = userprovider.email;
+    print('Loaded Last Name: ${userprovider.lastName}');
+  }
+
+  @override
+  void dispose(){
+    firstName.dispose();
+    lastName.dispose();
+    emailAddress.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final userProvider = context.watch<UserProvider>();
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Registarion'),
@@ -55,7 +78,7 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
               TextFormField(
                 controller: firstName,
                 decoration: InputDecoration(
-                  labelText: 'First name',
+                  labelText: userProvider.firstName,
                   labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                   hintText: 'Enter your first name',
                   hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
@@ -69,7 +92,7 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
               TextFormField(
                 controller: lastName,
                 decoration: InputDecoration(
-                  labelText: 'Last name',
+                  labelText: userProvider.lastName,
                   labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                   hintText: 'Enter your last name',
                   hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
@@ -307,6 +330,22 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
                     //     builder: (context) => ExamplePageState(),
                     //   ),
                     // );
+                    final userProvider = context.read<UserProvider>();
+                    userProvider.setUser(
+                      firstName.text, 
+                      lastName.text,
+                      emailAddress.text,
+                      phoneno.text,
+                      password.text,
+                      retypepassword.text,
+                      selectedCity ?? "",
+                      selectedCity ?? "",
+                      message.text,
+                      stateName.text,
+                      contryName.text
+                      
+
+                    );
                       Navigator.push(
                         context, 
                         MaterialPageRoute(builder: (context) => ProductList())

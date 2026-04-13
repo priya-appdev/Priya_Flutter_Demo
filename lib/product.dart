@@ -1,14 +1,17 @@
 
 import 'dart:convert';
 
+import 'package:counter_app/ProfilePage.dart';
 import 'package:counter_app/api_service.dart';
+import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
 import 'package:counter_app/model/product_model.dart';
+import 'package:provider/provider.dart';
 
 
 class ProductList extends StatefulWidget{
-
-  const ProductList({super.key});
+ 
+  const ProductList({super.key});                       
 
   @override
   State<ProductList> createState() => _ProductListPage();
@@ -18,7 +21,7 @@ class _ProductListPage extends State<ProductList>{
 
    List<Product> productList = [];
    bool isLoading = true;
-
+   
   @override
     void initState(){
     super.initState();
@@ -27,12 +30,20 @@ class _ProductListPage extends State<ProductList>{
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(
+    final userProviderr = context.watch<UserProvider>();
+    return Consumer<UserProvider>(builder: (context,userProvider,_){
+       return Scaffold(
       appBar: AppBar(
+        
         leading: IconButton(onPressed: (){
           Navigator.pop(context);
         }, icon: Icon(Icons.arrow_back)),
-        title: Text('Product List'),
+        title: Text('${userProvider.firstName} ${userProvider.lastName}'),
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+          }, icon: Icon(Icons.person_pin_circle))
+        ],
       ),
       body: isLoading ? 
         Center(child: CircularProgressIndicator(),) : 
@@ -80,6 +91,8 @@ class _ProductListPage extends State<ProductList>{
         }
       ),
     );
+    });
+   
   }
 
   Future<void> _productList() async{

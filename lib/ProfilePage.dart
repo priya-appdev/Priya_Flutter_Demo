@@ -21,7 +21,7 @@ TextEditingController lastName = TextEditingController();
     final userProver = context.watch<UserProvider>();
     return Scaffold(
         appBar: AppBar(
-        title: Text('Registarion'),
+        title: Text('Profile'),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -38,7 +38,7 @@ TextEditingController lastName = TextEditingController();
               TextFormField(
                 controller: firstName,
                 decoration: InputDecoration(
-                  labelText:  userProver.firstName,
+                  labelText:  userProver.getFirstname,
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                   // hintText: 'Enter first name',
@@ -53,7 +53,7 @@ TextEditingController lastName = TextEditingController();
               TextFormField(
                 controller: lastName,
                 decoration: InputDecoration(
-                  labelText: userProver.lastName,
+                  labelText: userProver.getLastname,
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                   hintText: 'Enter last name',

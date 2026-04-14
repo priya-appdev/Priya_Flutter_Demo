@@ -41,10 +41,10 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
   void initState(){
     super.initState();
     final userprovider = context.read<UserProvider>();
-    firstName.text = userprovider.firstName;
-    lastName.text = userprovider.lastName;
-    emailAddress.text = userprovider.email;
-    print('Loaded Last Name: ${userprovider.lastName}');
+    firstName.text = userprovider.getFirstname;
+    lastName.text = userprovider.getLastname;
+    emailAddress.text = userprovider.getEmail;
+    print('Loaded Last Name: ${userprovider.getLastname}');
   }
 
   @override
@@ -57,7 +57,6 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = context.watch<UserProvider>();
     
     return Scaffold(
       appBar: AppBar(
@@ -78,7 +77,7 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
               TextFormField(
                 controller: firstName,
                 decoration: InputDecoration(
-                  labelText: userProvider.firstName,
+                  labelText: 'First name',
                   labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                   hintText: 'Enter your first name',
                   hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
@@ -92,7 +91,7 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
               TextFormField(
                 controller: lastName,
                 decoration: InputDecoration(
-                  labelText: userProvider.lastName,
+                  labelText: 'Last name',
                   labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                   hintText: 'Enter your last name',
                   hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
@@ -197,30 +196,47 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
                 ),
               ),
               SizedBox(height: 15),
-              DropdownButtonFormField(
-                value: selectedCity,
-                hint: Text('Select city',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),),
-                decoration: InputDecoration(
-                  labelText: 'Select city',
-                  labelStyle: TextStyle(fontFamily: 'Poopins',fontSize: 15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
+              // DropdownButtonFormField(
+              //   value: selectedCity,
+              //   hint: Text('Select city',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),),
+              //   decoration: InputDecoration(
+              //     labelText: 'Select city',
+              //     labelStyle: TextStyle(fontFamily: 'Poopins',fontSize: 15),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(10)
+              //     ),
                   
+              //   ),
+              //   isExpanded: true,
+              //   items: cities.map((city){
+              //   return DropdownMenuItem(value: city,child: Text(city,style: TextStyle(fontFamily: 'Poppins',fontSize: 15),));
+              // }).toList(), onChanged: (value){
+              //   setState(() {
+              //     selectedCity = value;
+              //   });
+              // }),
+              // SizedBox(
+              //   height: 15,
+              // ),
+              TextFormField(
+                controller: stateName,
+                decoration: InputDecoration(
+                  labelText: 'State',
+                  labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+                  hintText: 'Enter your state name',
+                  hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+                  prefixIcon: Icon(Icons.map),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                isExpanded: true,
-                items: cities.map((city){
-                return DropdownMenuItem(value: city,child: Text(city,style: TextStyle(fontFamily: 'Poppins',fontSize: 15),));
-              }).toList(), onChanged: (value){
-                setState(() {
-                  selectedCity = value;
-                });
-              }),
+              ),
               SizedBox(
                 height: 15,
               ),
               DropdownMenu(
                 hintText: 'Select city',
+                leadingIcon: Icon(Icons.location_city),
                 textStyle: TextStyle(fontFamily: 'Poppins',fontSize: 15),
                 expandedInsets: EdgeInsets.zero,
                 inputDecorationTheme: InputDecorationTheme(
@@ -235,23 +251,6 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
               SizedBox(
                 height: 15,
               ),
-              SizedBox(
-                height:15
-              ),
-              TextFormField(
-                controller: stateName,
-                decoration: InputDecoration(
-                  labelText: 'State',
-                  labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  hintText: 'Enter your state name',
-                  hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  prefixIcon: Icon(Icons.map),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
               TextFormField(
                 controller: streetAddress,
                 decoration: InputDecoration(
@@ -267,32 +266,34 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
               ),
               SizedBox(height: 15),
               SizedBox(
-                height: 100,
-                child: TextField(
-                  controller: message,
-                  expands: true,
-                  textAlignVertical: TextAlignVertical.top,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    labelText: 'Message',
-                    labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                    hintText: 'Enter message',
-                    hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.only(top: 0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        widthFactor: 1.0,
-                        heightFactor: 1.0,
-                        child: Icon(Icons.message),
+                  height: 100,
+                  child: Stack(
+                    children: [
+                      TextField(
+                        controller: message,
+                        minLines: 4,
+                        maxLines: null,
+                        textAlignVertical: TextAlignVertical.top,
+                        decoration: InputDecoration(
+                          labelText: 'Message',
+                          labelStyle: TextStyle(
+                            fontFamily: 'Poppins',fontSize: 15
+                          ),
+                          hintText: 'Enter message',
+                          hintStyle: TextStyle(
+                            fontFamily: 'Poppins',fontSize: 15
+                          ),
+                          contentPadding: EdgeInsets.fromLTRB(50, 16, 12, 12),
+                          alignLabelWithHint: true,
+                           border: OutlineInputBorder(
+                               borderRadius: BorderRadius.circular(10),
+                            ),
+                        ),
                       ),
-                    ),
-                    alignLabelWithHint: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                      Positioned(left:12,top: 16,
+                      child: Icon(Icons.message,size: 24,))
+                    ],
                   ),
-                ),
               ),
               SizedBox(height: 15),
               Container(
@@ -338,13 +339,11 @@ class _RegistrationPageDemo extends State<RegistrationDemopage> {
                       phoneno.text,
                       password.text,
                       retypepassword.text,
-                      selectedCity ?? "",
-                      selectedCity ?? "",
-                      message.text,
+                      contryName.text,
                       stateName.text,
-                      contryName.text
-                      
-
+                      selectedCity ?? "",
+                      streetAddress.text,
+                      message.text
                     );
                       Navigator.push(
                         context, 

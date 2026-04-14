@@ -30,7 +30,7 @@ class _ProductListPage extends State<ProductList>{
 
   @override
   Widget build(BuildContext context){
-    final userProviderr = context.watch<UserProvider>();
+    // final userProviderr = context.watch<UserProvider>();
     return Consumer<UserProvider>(builder: (context,userProvider,_){
        return Scaffold(
       appBar: AppBar(
@@ -38,7 +38,7 @@ class _ProductListPage extends State<ProductList>{
         leading: IconButton(onPressed: (){
           Navigator.pop(context);
         }, icon: Icon(Icons.arrow_back)),
-        title: Text('${userProvider.firstName} ${userProvider.lastName}'),
+        title: Text('${userProvider.getFirstname} ${userProvider.getLastname}'),
         actions: [
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));

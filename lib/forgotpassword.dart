@@ -1,14 +1,14 @@
 import 'package:counter_app/createNewpassword.dart';
 import 'package:flutter/material.dart';
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+class ForgotpasswordScreen extends StatefulWidget {
+  const ForgotpasswordScreen({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPage();
+  State<ForgotpasswordScreen> createState() => _ForgotpasswordPage();
 }
 
-class _RegistrationPage extends State<RegistrationPage> {
+class _ForgotpasswordPage extends State<ForgotpasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

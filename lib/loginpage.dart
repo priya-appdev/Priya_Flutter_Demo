@@ -1,8 +1,10 @@
 import 'package:counter_app/RegistrationPage.dart';
 import 'package:counter_app/forgotpassword.dart';
+import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
 import 'package:counter_app/textFiledForm.dart';
-
+import 'package:counter_app/product.dart';
+import 'package:provider/provider.dart';
 class LoginpageState extends StatefulWidget {
   const LoginpageState({super.key});
 
@@ -23,6 +25,9 @@ class _Loginpage extends State<LoginpageState> {
   bool isHiddenPassword = true;
 
   Widget build(BuildContext context) {
+
+    final provider = context.watch<UserProvider>();
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -109,7 +114,7 @@ class _Loginpage extends State<LoginpageState> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => RegistrationPage(),
+                              builder: (context) => ForgotpasswordScreen(),
                             ),
                           );
                         },
@@ -118,7 +123,6 @@ class _Loginpage extends State<LoginpageState> {
                         ),
                         child: Text(
                           'Forgot password?',
-
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 15,
@@ -145,25 +149,41 @@ class _Loginpage extends State<LoginpageState> {
                     ),
                     child: OutlinedButton(
                       onPressed: () {
-                        if (email.text.isEmpty) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text('Invalid'),
-                                content: Text('Please enter first name'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('OK'),
-                                  ),
-                                ],
-                              );
-                            },
+
+                        final error = _validateFields();
+                        if (error != null){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error))
                           );
+                        }else{
+                          if (email.text != provider.getEmail && password.text != provider.getPassword){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Email or Password does not match')));
+                          }else{
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList()));
+                          }
                         }
+                        // if (email.text.isEmpty) {
+                        //   showDialog(
+                        //     context: context,
+                        //     builder: (context) {
+                        //       return AlertDialog(
+                        //         title: Text('Invalid'),
+                        //         content: Text('Please enter first name'),
+                        //         actions: [
+                        //           TextButton(
+                        //             onPressed: () {
+                        //               Navigator.pop(context);
+                        //             },
+                        //             child: Text('OK'),
+                        //           ),
+                        //         ],
+                        //       );
+                        //     },
+                        //   );
+                        // }else{
+                        //   Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList()));
+                        // }
                       },
                       style: OutlinedButton.styleFrom(
                         side: BorderSide.none,
@@ -219,4 +239,19 @@ class _Loginpage extends State<LoginpageState> {
       ),
     );
   }
+
+  String? _validateFields(){
+
+    if (email.text.isEmpty)  return 'Please enter email address';
+
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email.text)){
+      return 'Please enter valid email';
+    }
+
+    if (password.text.isEmpty) return 'Please enter password';
+
+    if (password.text.length < 6) return 'Please enter atleast 6 char';
+    
+  }
+
 }

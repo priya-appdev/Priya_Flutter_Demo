@@ -19,7 +19,7 @@ void main(){
   runApp(
     MultiProvider(
       providers:[
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create:  (_) => UserProvider()..loadUser())
       ],
       child: MyApp(),
     )
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: RegistrationDemopage(),
+      home: LoginpageState(),
     );
   }
 }

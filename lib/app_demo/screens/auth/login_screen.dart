@@ -1,18 +1,24 @@
-import 'package:counter_app/RegistrationPage.dart';
-import 'package:counter_app/forgotpassword.dart';
+import 'package:counter_app/app_demo/main/tabbar_screen.dart';
+import 'package:counter_app/app_demo/riverpod/user/user_provider.dart';
+import 'package:counter_app/app_demo/screens/auth/registration_screen.dart';
+import 'package:counter_app/app_demo/screens/auth/forgotpassword_screen.dart';
 import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
-import 'package:counter_app/textFiledForm.dart';
-import 'package:counter_app/product.dart';
+import 'package:counter_app/app_demo/screens/product/product_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
-class LoginpageState extends StatefulWidget {
+import 'package:counter_app/app_demo/screens/product/product_screen.dart';
+import '../../riverpod/user/user_provider.dart';
+
+
+class LoginpageState extends ConsumerStatefulWidget {
   const LoginpageState({super.key});
 
   @override
-  State<LoginpageState> createState() => _Loginpage();
+  ConsumerState<LoginpageState> createState() => _Loginpage();
 }
 
-class _Loginpage extends State<LoginpageState> {
+class _Loginpage extends ConsumerState<LoginpageState> {
   @override
   void dispose() {
     email.dispose();
@@ -25,8 +31,6 @@ class _Loginpage extends State<LoginpageState> {
   bool isHiddenPassword = true;
 
   Widget build(BuildContext context) {
-
-    final provider = context.watch<UserProvider>();
 
     return Scaffold(
       body: Center(
@@ -148,20 +152,32 @@ class _Loginpage extends State<LoginpageState> {
                       ],
                     ),
                     child: OutlinedButton(
-                      onPressed: () {
-
+                      onPressed: () async{
                         final error = _validateFields();
                         if (error != null){
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(error))
                           );
                         }else{
-                          if (email.text != provider.getEmail && password.text != provider.getPassword){
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Email or Password does not match')));
+                          final isLoggedIn = await ref.read(userProvider.notifier).login(email: email.text, password: password.text);
+                          // final isLoggedIn = await context.read<UserProvider>().login(
+                          //   email.text , 
+                          //   password.text
+                          // );
+                          if (isLoggedIn){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TabbarControllerPage()));
                           }else{
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList()));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Email or Password does not match'))
+                            );
                           }
+
+                          // if (email.text != provider.getEmail && password.text != provider.getPassword){
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     SnackBar(content: Text('Email or Password does not match')));
+                          // }else{
+                          //   Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList()));
+                          // }
                         }
                         // if (email.text.isEmpty) {
                         //   showDialog(
@@ -213,7 +229,7 @@ class _Loginpage extends State<LoginpageState> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => RegistrationDemopage(),
+                              builder: (context) => RegistrationScreen(),
                             ),
                           );
                         },

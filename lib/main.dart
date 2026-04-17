@@ -1,3 +1,4 @@
+import 'package:counter_app/app_demo/riverpod/product/product_provider.dart';
 import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
 import 'registration_page.dart';
@@ -5,24 +6,42 @@ import 'gridview_builder.dart';
 //import 'lisview_builder.dart';
 import 'Textview.dart';
 import 'scroll_textfiled.dart';
-import 'loginpage.dart';
+import 'app_demo/screens/auth/login_screen.dart';
 import 'dynamic_list.dart';
 import 'onboarding_screen.dart';
 import 'reports.dart';
 import 'datepicker.dart';
-import 'product.dart';
-import 'RegistrationPage.dart';
+import 'app_demo/screens/product/product_screen.dart';
+import 'app_demo/screens/auth/registration_screen.dart';
 import 'package:provider/provider.dart';
 import 'model/provider.model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:counter_app/Riverpod/product_page.dart';
+import 'app_demo/main/tabbar_screen.dart';
+import 'app_demo/screens/auth/login_screen.dart';
+//-----------------------
+// USING THE PROVIDERS
+//---------------------
+
+// void main(){
+//   runApp(
+//     MultiProvider(
+//       providers:[
+//         ChangeNotifierProvider(create:  (_) => UserProvider()..loadUser()),
+//         ChangeNotifierProvider(create: (_) => ProductProvider())
+//       ],
+//       child: MyApp(),
+//     )
+//   );
+// }
+
+//-------------------------
+// USING THE RIVERPOD
+//-------------------------
 
 void main(){
   runApp(
-    MultiProvider(
-      providers:[
-        ChangeNotifierProvider(create:  (_) => UserProvider()..loadUser())
-      ],
-      child: MyApp(),
-    )
+    ProviderScope(child: MyApp())
   );
 }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:counter_app/loginpage.dart';
+import 'package:counter_app/app_demo/screens/auth/login_screen.dart';
 
 class CreateNewPasswordState extends StatefulWidget {
   @override

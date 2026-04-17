@@ -27,6 +27,32 @@ class UserProvider extends ChangeNotifier{
   String get getMessage => _message;
   String get getEmail => _email;
 
+
+  Future<bool> login(String email, String password) async{
+    if (_email == email && _password == password){
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> register({
+    required String firstname,
+    required String lastname,
+    required String emailID,
+    required String phonnumber,
+    required String password,
+    required String retypepassword,
+    required String country,
+    required String state,
+    required String city,
+    required String streetAddress,
+    required String message
+  }) async{
+    await setUser(firstname, lastname, emailID, phonnumber, password, retypepassword, city, state, country, streetAddress, message);
+    return true;
+  }
+
   Future<void> loadUser() async{
 
     final pref = await SharedPreferences.getInstance();
@@ -44,34 +70,43 @@ class UserProvider extends ChangeNotifier{
 
   }
 
-  Future<void> setUser(String first,String last,String emailAddress,
-    String phoneno,String password,String retypepassword , 
-    String city,String state,String country, String Street, String msg) async{
-      _firstName = first;
-      _lastName = last;
-      _email = emailAddress;
-      _phone = phoneno;
-      _password = password;
-      _retypepassword = retypepassword;
-      _city = city;
-      _state = state;
-      _country = country;
-      _streetAddress = Street;
-      _message = msg;
+  Future<void> setUser(
+    String first,
+    String last,
+    String emailAddress,
+    String phoneno,
+    String password,
+    String retypepassword , 
+    String city,
+    String state,
+    String country, 
+    String Street, 
+    String msg) async{
+          _firstName = first;
+          _lastName = last;
+          _email = emailAddress;
+          _phone = phoneno;
+          _password = password;
+          _retypepassword = retypepassword;
+          _city = city;
+          _state = state;
+          _country = country;
+          _streetAddress = Street;
+          _message = msg;
 
-    final pref = await SharedPreferences.getInstance();
-    await pref.setString('firstName',first,);
-    await pref.setString('lastName',last);
-    await pref.setString('email',emailAddress);
-    await pref.setString('phoneno',phoneno,);
-    await pref.setString('password',password,);
-    await pref.setString('retypepassword',retypepassword);
-    await pref.setString('country',country);
-    await pref.setString('state',state);
-    await pref.setString('city',city);
-    await pref.setString('streetAddress',Street);
-    await pref.setString('message',msg);
+            final pref = await SharedPreferences.getInstance();
+            await pref.setString('firstName',first,);
+            await pref.setString('lastName',last);
+            await pref.setString('email',emailAddress);
+            await pref.setString('phoneno',phoneno,);
+            await pref.setString('password',password,);
+            await pref.setString('retypepassword',retypepassword);
+            await pref.setString('country',country);
+            await pref.setString('state',state);
+            await pref.setString('city',city);
+            await pref.setString('streetAddress',Street);
+            await pref.setString('message',msg);
 
-    notifyListeners();
+            notifyListeners();
   }
 }

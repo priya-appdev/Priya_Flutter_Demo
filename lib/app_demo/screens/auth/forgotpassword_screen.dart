@@ -1,4 +1,4 @@
-import 'package:counter_app/createNewpassword.dart';
+import 'package:counter_app/app_demo/screens/auth/createnewpassword_screen.dart';
 import 'package:flutter/material.dart';
 
 class ForgotpasswordScreen extends StatefulWidget {

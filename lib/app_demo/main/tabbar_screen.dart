@@ -4,6 +4,7 @@ import 'package:counter_app/app_demo/screens/product/product_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../riverpod/user/user_provider.dart';
 import '../riverpod/product/product_provider.dart';
+import '../screens/cart/cart_screen.dart';
 
 
 class TabbarControllerPage extends ConsumerStatefulWidget {
@@ -53,7 +54,7 @@ class TabbarControllerPage extends ConsumerStatefulWidget {
           children: [
 
               ProductRiverpodPage(),
-              _buildRegistrationPage(),
+              CartRiverPodPage(),
               _buildRegistrationPage(),
 
         ]),
@@ -65,16 +66,16 @@ class TabbarControllerPage extends ConsumerStatefulWidget {
           unselectedLabelColor: Colors.green,
           tabs: [
            Tab(
+                icon: Icon(Icons.library_add),
+                text: 'Product',
+              ),
+              Tab(
+                icon: Icon(Icons.shopping_cart),
+                text: 'Cart',
+              ),
+              Tab(
                 icon: Icon(Icons.person),
-                text: 'Registration',
-              ),
-              Tab(
-                icon: Icon(Icons.email),
-                text: 'Contact',
-              ),
-              Tab(
-                icon: Icon(Icons.info),
-                text: 'Details',
+                text: 'Profile',
               )
         ]),
         

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:counter_app/app_demo/screens/auth/login_screen.dart';
+import '../../widgets/custom_text_fileds.dart';
 
 class CreateNewPasswordState extends StatefulWidget {
   @override
@@ -8,6 +9,11 @@ class CreateNewPasswordState extends StatefulWidget {
 }
 
 class Createnewpassword extends State<CreateNewPasswordState> {
+
+   TextEditingController newPassword = TextEditingController();
+   TextEditingController retypePassword = TextEditingController();
+
+   @override
   bool isNewPassword = true;
   bool isRetypePassword = true;
 
@@ -52,62 +58,35 @@ class Createnewpassword extends State<CreateNewPasswordState> {
               padding: EdgeInsets.all(18),
               child: Column(
                 children: [
-                  TextField(
-                    obscureText: isNewPassword,
-                    decoration: InputDecoration(
-                      labelText: 'New password',
-                      labelStyle: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 15,
-                      ),
-                      hintText: 'Enter your new password',
-                      hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isNewPassword = !isNewPassword;
-                          });
-                        },
-                        icon: Icon(
-                          isNewPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+
+                  CustomTextFileds(
+                    controller: newPassword, 
+                    labelText: 'New password', 
+                    hintText: 'Enter your new password', 
+                    prefixIcon: Icons.lock,
+                    obsecureText: isNewPassword,
+                    suffixIcon: isNewPassword ? Icons.visibility_off : Icons.visibility,
+                    onSuffixIconPressed: () {
+                      setState(() {
+                        isNewPassword = !isNewPassword;
+                      });
+                    },
                   ),
-                  SizedBox(height: 18),
-                  TextField(
-                    obscureText: isRetypePassword,
-                    decoration: InputDecoration(
-                      labelText: 'Retype password',
-                      labelStyle: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 15,
-                      ),
-                      hintText: 'Enter your retype password',
-                      hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isRetypePassword = !isRetypePassword;
-                          });
-                        },
-                        icon: Icon(
-                          isRetypePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextFileds(
+                    controller: retypePassword, 
+                    labelText: 'Retype password', 
+                    hintText: 'Enter your retype password', 
+                    prefixIcon: Icons.lock,
+                    obsecureText: isRetypePassword,
+                    suffixIcon: isRetypePassword ? Icons.visibility_off : Icons.visibility,
+                    onSuffixIconPressed: () {
+                      setState(() {
+                        isRetypePassword = !isRetypePassword;
+                      });
+                    },
                   ),
                   SizedBox(height: 18),
                   Container(

@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:counter_app/app_demo/screens/product/product_screen.dart';
 import '../../riverpod/user/user_provider.dart';
+import '../../widgets/custom_text_fileds.dart';
 
 
 class LoginpageState extends ConsumerStatefulWidget {
@@ -63,51 +64,25 @@ class _Loginpage extends ConsumerState<LoginpageState> {
               padding: EdgeInsets.all(18),
               child: Column(
                 children: [
-                  TextField(
-                    controller: email,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      labelStyle: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 15,
-                      ),
-                      hintText: 'Email address',
-                      hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                      prefixIcon: Icon(Icons.email),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                  CustomTextFileds(
+                    controller: email, 
+                    labelText: 'Email address', 
+                    hintText: 'Enter your email address', 
+                    prefixIcon: Icons.email
                   ),
                   SizedBox(height: 15),
-                  TextField(
-                    controller: password,
-                    obscureText: isHiddenPassword,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 15,
-                      ),
-                      hintText: 'Password',
-                      hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isHiddenPassword = !isHiddenPassword;
-                          });
-                        },
-                        icon: Icon(
-                          isHiddenPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                  CustomTextFileds(
+                    controller: password, 
+                    labelText: 'Password', 
+                    hintText: 'Enter your password', 
+                    prefixIcon: Icons.lock,
+                    suffixIcon: isHiddenPassword ? Icons.visibility_off : Icons.visibility,
+                    obsecureText: isHiddenPassword,
+                    onSuffixIconPressed: (){
+                      setState(() {
+                        isHiddenPassword = !isHiddenPassword;
+                      });
+                    },
                   ),
                   SizedBox(height: 2),
                   Row(

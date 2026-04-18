@@ -1,4 +1,3 @@
-
 // import 'package:counter_app/model/provider.model.dart';
 // import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +13,10 @@ import '../../main/tabbar_screen.dart';
 //   State<RegistrationDemopage> createState() => _RegistrationPageDemo();
 // }
 
-class RegistrationScreen extends ConsumerStatefulWidget{
-
-    @override
-    const RegistrationScreen({super.key});
-    ConsumerState<RegistrationScreen> createState() => _RegistrationPageDemo();
+class RegistrationScreen extends ConsumerStatefulWidget {
+  @override
+  const RegistrationScreen({super.key});
+  ConsumerState<RegistrationScreen> createState() => _RegistrationPageDemo();
 }
 
 // class _RegistrationPageDemo extends State<RegistrationScreen> {
@@ -66,7 +64,7 @@ class RegistrationScreen extends ConsumerStatefulWidget{
 
 //   @override
 //   Widget build(BuildContext context) {
-    
+
 //     return Scaffold(
 //       appBar: AppBar(
 //         title: Text('Registarion'),
@@ -214,7 +212,7 @@ class RegistrationScreen extends ConsumerStatefulWidget{
 //               //     border: OutlineInputBorder(
 //               //       borderRadius: BorderRadius.circular(10)
 //               //     ),
-                  
+
 //               //   ),
 //               //   isExpanded: true,
 //               //   items: cities.map((city){
@@ -331,18 +329,18 @@ class RegistrationScreen extends ConsumerStatefulWidget{
 //                       );
 //                       return;
 //                     }else{
-                      
+
 //                       await context.read<UserProvider>().register(
-//                         firstname: firstName.text, 
+//                         firstname: firstName.text,
 //                         lastname: lastName.text,
-//                         emailID: emailAddress.text, 
-//                         phonnumber: phoneno.text, 
-//                         password: password.text, 
-//                         retypepassword: retypepassword.text, 
-//                         country: contryName.text, 
-//                         state: stateName.text, 
-//                         city: selectedCity ?? "", 
-//                         streetAddress: streetAddress.text, 
+//                         emailID: emailAddress.text,
+//                         phonnumber: phoneno.text,
+//                         password: password.text,
+//                         retypepassword: retypepassword.text,
+//                         country: contryName.text,
+//                         state: stateName.text,
+//                         city: selectedCity ?? "",
+//                         streetAddress: streetAddress.text,
 //                         message: message.text
 //                       );
 //                       ScaffoldMessenger.of(context).showSnackBar(
@@ -356,7 +354,7 @@ class RegistrationScreen extends ConsumerStatefulWidget{
 //                     // );
 //                     // final userProvider = context.read<UserProvider>();
 //                     // userProvider.setUser(
-//                     //   firstName.text, 
+//                     //   firstName.text,
 //                     //   lastName.text,
 //                     //   emailAddress.text,
 //                     //   phoneno.text,
@@ -369,7 +367,7 @@ class RegistrationScreen extends ConsumerStatefulWidget{
 //                     //   message.text
 //                     // );
 //                       Navigator.push(
-//                         context, 
+//                         context,
 //                         MaterialPageRoute(builder: (context) => TabbarControllerPage())
 //                       );
 //                     }
@@ -492,7 +490,7 @@ class RegistrationScreen extends ConsumerStatefulWidget{
 //     }
 
 //     if (phoneno.text.isEmpty) return 'Please enter a phone no';
-    
+
 //     if (!RegExp(r'^[0-9]{10}$').hasMatch(phoneno.text)){
 //       return 'Please enter valid phone no';
 //     }
@@ -512,13 +510,11 @@ class RegistrationScreen extends ConsumerStatefulWidget{
 //     if (streetAddress.text.isEmpty) return 'Please enter street address';
 
 //     if (message.text.isEmpty) return 'Please enter messge';
-    
+
 //   }
 // }
 
-
-class _RegistrationPageDemo extends ConsumerState<RegistrationScreen>{
-
+class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController emailAddress = TextEditingController();
@@ -540,20 +536,17 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen>{
     'Delhi',
     'Mumbai',
     'Pune',
-    'Jaipur'
+    'Jaipur',
   ];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    Future.microtask((){
-
-    });
+    Future.microtask(() {});
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Registarion'),
@@ -570,157 +563,80 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen>{
           clipBehavior: Clip.none,
           child: Column(
             children: [
-
               CustomTextFileds(
-                controller: firstName, 
-                labelText: 'First name', 
-                hintText: 'Enter your first name', 
-                prefixIcon: Icons.person),
-              SizedBox(height: 15),
-              CustomTextFileds(
-                controller: lastName, 
-                labelText: 'Last name', 
-                hintText: 'Enter your last name', 
-                prefixIcon: Icons.person),
+                controller: firstName,
+                labelText: 'First name',
+                hintText: 'Enter your first name',
+                prefixIcon: Icons.person,
+              ),
               SizedBox(height: 15),
               CustomTextFileds(
-                controller: emailAddress, 
-                labelText: 'Email', 
-                hintText: 'Enter your email address', 
-                prefixIcon: Icons.email),
+                controller: lastName,
+                labelText: 'Last name',
+                hintText: 'Enter your last name',
+                prefixIcon: Icons.person,
+              ),
               SizedBox(height: 15),
               CustomTextFileds(
-                controller: phoneno, 
-                labelText: 'Phone numbet', 
-                hintText: 'Enter your phone number', 
-                prefixIcon: Icons.phone),
+                controller: emailAddress,
+                labelText: 'Email',
+                hintText: 'Enter your email address',
+                prefixIcon: Icons.email,
+              ),
               SizedBox(height: 15),
               CustomTextFileds(
-                controller: password, 
-                labelText: 'Password', 
-                hintText: 'Enter your password', 
-                prefixIcon: Icons.person),
+                controller: phoneno,
+                labelText: 'Phone numbet',
+                hintText: 'Enter your phone number',
+                prefixIcon: Icons.phone,
+              ),
               SizedBox(height: 15),
               CustomTextFileds(
-                controller: retypepassword, 
-                labelText: 'Retype password', 
-                hintText: 'Enter your retype password', 
-                prefixIcon: Icons.person),
-              SizedBox(height: 15),
-              CustomTextFileds(
-                controller: contryName, 
-                labelText: 'Country name', 
-                hintText: 'Enter your country name', 
-                prefixIcon: Icons.person),
-              SizedBox(height: 15),
-              CustomTextFileds(
-                controller: stateName, 
-                labelText: 'First name', 
-                hintText: 'Enter your first name', 
-                prefixIcon: Icons.person),
-              SizedBox(height: 15),
-              CustomTextFileds(
-                controller: firstName, 
-                labelText: 'First name', 
-                hintText: 'Enter your first name', 
-                prefixIcon: Icons.person),
-              SizedBox(height: 15),
-              CustomTextFileds(
-                controller: retypepassword, 
-                labelText: 'First name', 
-                hintText: 'Enter your first name', 
-                prefixIcon: Icons.person),
-              SizedBox(height: 15),
-              CustomTextFileds(
-                controller: retypepassword, 
-                labelText: 'First name', 
-                hintText: 'Enter your first name', 
-                prefixIcon: Icons.person),
-              SizedBox(height: 15),
-              SizedBox(height: 15),
-              TextFormField(
                 controller: password,
-                obscureText: isShowpassword,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  hintText: 'Enter your password',
-                  hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isShowpassword = !isShowpassword;
-                      });
-                    },
-                    icon: Icon(
-                      isShowpassword ? Icons.visibility : Icons.visibility_off,
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                labelText: 'Password',
+                hintText: 'Enter your password',
+                prefixIcon: Icons.lock,
+                obsecureText: isShowpassword,
+                suffixIcon: isShowpassword ? 
+                    Icons.visibility : Icons.visibility_off,
+                onSuffixIconPressed: (){
+                  setState(() {
+                    isShowpassword = !isShowpassword;
+                  });
+                }
               ),
               SizedBox(height: 15),
-              TextFormField(
+              CustomTextFileds(
                 controller: retypepassword,
-                obscureText: isRetypepassword,
-                decoration: InputDecoration(
-                  labelText: 'Retype password',
-                  labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  hintText: 'Enter your retype password',
-                  hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isRetypepassword = !isRetypepassword;
-                      });
-                    },
-                    icon: Icon(
-                      isRetypepassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                labelText: 'Retype password',
+                hintText: 'Enter your retype password',
+                prefixIcon: Icons.lock,
+                obsecureText: isRetypepassword,
+                suffixIcon: isRetypepassword
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                onSuffixIconPressed: () {
+                  setState(() {
+                    isRetypepassword = !isRetypepassword;
+                  });
+                },
               ),
               SizedBox(height: 15),
-              TextFormField(
+              CustomTextFileds(
                 controller: contryName,
-                decoration: InputDecoration(
-                  labelText: 'Country',
-                  labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  hintText: 'Enter your country name',
-                  hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  prefixIcon: Icon(Icons.map),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                labelText: 'Country name',
+                hintText: 'Enter your country name',
+                prefixIcon: Icons.person,
               ),
               SizedBox(height: 15),
-              TextFormField(
+              CustomTextFileds(
                 controller: stateName,
-                decoration: InputDecoration(
-                  labelText: 'State',
-                  labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  hintText: 'Enter your state name',
-                  hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  prefixIcon: Icon(Icons.map),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                labelText: 'State name',
+                hintText: 'Enter your state name',
+                prefixIcon: Icons.person,
               ),
-              SizedBox(
-                height: 15,
-              ),
-              DropdownMenu(
+              SizedBox(height: 15),
+             DropdownMenu(
                 hintText: 'Select city',
                 leadingIcon: Icon(Icons.location_city),
                 textStyle: TextStyle(fontFamily: 'Poppins',fontSize: 15),
@@ -734,52 +650,50 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen>{
                   return DropdownMenuEntry(value: city, label: city);
                 }).toList()
               ),
+              SizedBox(height: 15),
+              CustomTextFileds(
+                controller: streetAddress,
+                labelText: 'Street address',
+                hintText: 'Enter your street address',
+                prefixIcon: Icons.home,
+              ),
               SizedBox(
                 height: 15,
               ),
-              TextFormField(
-                controller: streetAddress,
-                decoration: InputDecoration(
-                  labelText: 'Street address',
-                  labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  hintText: 'Enter your street address',
-                  hintStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                  prefixIcon: Icon(Icons.map),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
               SizedBox(
-                  height: 100,
-                  child: Stack(
-                    children: [
-                      TextField(
-                        controller: message,
-                        minLines: 4,
-                        maxLines: null,
-                        textAlignVertical: TextAlignVertical.top,
-                        decoration: InputDecoration(
-                          labelText: 'Message',
-                          labelStyle: TextStyle(
-                            fontFamily: 'Poppins',fontSize: 15
-                          ),
-                          hintText: 'Enter message',
-                          hintStyle: TextStyle(
-                            fontFamily: 'Poppins',fontSize: 15
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(50, 16, 12, 12),
-                          alignLabelWithHint: true,
-                           border: OutlineInputBorder(
-                               borderRadius: BorderRadius.circular(10),
-                            ),
+                height: 100,
+                child: Stack(
+                  children: [
+                    TextField(
+                      controller: message,
+                      maxLines: null,
+                      minLines: 4,
+                      
+                      textAlignVertical: TextAlignVertical.top,
+                      decoration: InputDecoration(
+                        hintText: 'Message',
+                        hintStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15
                         ),
+                        labelText: 'Enter your message',
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15
+                        ),
+
+                        alignLabelWithHint: true,
+                        contentPadding: EdgeInsets.fromLTRB(50, 16, 12, 12),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        
                       ),
-                      Positioned(left:12,top: 16,
+                    ),
+                    Positioned(left:12,top: 16,
                       child: Icon(Icons.message,size: 24,))
-                    ],
-                  ),
+                  ],
+                ),
               ),
               SizedBox(height: 15),
               Container(
@@ -798,31 +712,35 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen>{
                   ],
                 ),
                 child: OutlinedButton(
-                  onPressed: () async{
-
+                  onPressed: () async {
                     final error = _validateFields();
 
-                    if (error != null){
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(error)),
-                      );
+                    if (error != null) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(error)));
                       return;
-                    }else{
-                      await ref.read(userProvider.notifier).setUser(
-                        firstName: firstName.text, 
-                        lastName: lastName.text, 
-                        email: emailAddress.text, 
-                        phone: phoneno.text, 
-                        password: password.text, 
-                        retypepassword: retypepassword.text, 
-                        country: contryName.text, 
-                        stateprovience: stateName.text, 
-                        city: selectedCity ?? "", 
-                        streetAddress: streetAddress.text, 
-                        message: message.text);
+                    } else {
+                      await ref
+                          .read(userProvider.notifier)
+                          .setUser(
+                            firstName: firstName.text,
+                            lastName: lastName.text,
+                            email: emailAddress.text,
+                            phone: phoneno.text,
+                            password: password.text,
+                            retypepassword: retypepassword.text,
+                            country: contryName.text,
+                            stateprovience: stateName.text,
+                            city: selectedCity ?? "",
+                            streetAddress: streetAddress.text,
+                            message: message.text,
+                          );
                       Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (context) => TabbarControllerPage())
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TabbarControllerPage(),
+                        ),
                       );
                     }
                   },
@@ -848,31 +766,34 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen>{
     );
   }
 
-  String? _validateFields(){
-
+  String? _validateFields() {
     if (firstName.text.isEmpty) return 'Please enter first name';
 
     if (lastName.text.isEmpty) return 'Please enter last name';
 
     if (emailAddress.text.isEmpty) return 'Please enter email address';
 
-    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(emailAddress.text)){
+    if (!RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    ).hasMatch(emailAddress.text)) {
       return 'Please enter valid email';
     }
 
     if (phoneno.text.isEmpty) return 'Please enter a phone no';
-    
-    if (!RegExp(r'^[0-9]{10}$').hasMatch(phoneno.text)){
+
+    if (!RegExp(r'^[0-9]{10}$').hasMatch(phoneno.text)) {
       return 'Please enter valid phone no';
     }
 
     if (password.text.isEmpty) return 'Please enter password';
 
-    if (password.text.length < 6) return 'Password must be at last 6 characters';
+    if (password.text.length < 6)
+      return 'Password must be at last 6 characters';
 
     if (retypepassword.text.isEmpty) return 'Please enter retype password';
 
-    if (retypepassword.text != password.text) return 'Password and retype password does not match';
+    if (retypepassword.text != password.text)
+      return 'Password and retype password does not match';
 
     if (contryName.text.isEmpty) return 'Please enter country name';
 
@@ -881,7 +802,5 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen>{
     if (streetAddress.text.isEmpty) return 'Please enter street address';
 
     if (message.text.isEmpty) return 'Please enter messge';
-    
   }
-
 }

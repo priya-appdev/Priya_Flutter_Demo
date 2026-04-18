@@ -6,18 +6,23 @@ class CustomTextFileds extends StatelessWidget{
   final String labelText;
   final String hintText;
   final IconData prefixIcon;
+  final IconData? suffixIcon;
+  final VoidCallback? onSuffixIconPressed;
   final bool obsecureText;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
+
 
   const CustomTextFileds({
     required this.controller,
     required this.labelText,
     required this.hintText,
     required this.prefixIcon,
-     this.obsecureText = false,
-     this.keyboardType = TextInputType.text,
-     this.validator,
+    this.suffixIcon,
+    this.onSuffixIconPressed,
+    this.obsecureText = false,
+    this.keyboardType = TextInputType.text,
+    this.validator,
   });
 
   @override
@@ -42,7 +47,9 @@ class CustomTextFileds extends StatelessWidget{
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10)
         ),
-        prefixIcon: Icon(prefixIcon)
+        prefixIcon: Icon(prefixIcon),
+        suffixIcon: suffixIcon!= null 
+          ? IconButton(onPressed: onSuffixIconPressed, icon: Icon(suffixIcon)) : null,
       ),
     );
   }

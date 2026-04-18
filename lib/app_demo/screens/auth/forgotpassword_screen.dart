@@ -1,5 +1,6 @@
 import 'package:counter_app/app_demo/screens/auth/createnewpassword_screen.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/custom_text_fileds.dart';
 
 class ForgotpasswordScreen extends StatefulWidget {
   const ForgotpasswordScreen({super.key});
@@ -9,6 +10,9 @@ class ForgotpasswordScreen extends StatefulWidget {
 }
 
 class _ForgotpasswordPage extends State<ForgotpasswordScreen> {
+
+    TextEditingController email = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,23 +60,11 @@ class _ForgotpasswordPage extends State<ForgotpasswordScreen> {
                 padding: EdgeInsets.all(18),
                 child: Column(
                   children: [
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 15,
-                        ),
-                        hintText: 'Email address',
-                        hintStyle: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 15,
-                        ),
-                        prefixIcon: Icon(Icons.email),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                    CustomTextFileds(
+                      controller: email, 
+                      labelText: 'Email address', 
+                      hintText: 'Enter your email address', 
+                      prefixIcon: Icons.email
                     ),
                     SizedBox(height: 30),
                     Container(

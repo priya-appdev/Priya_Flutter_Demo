@@ -79,9 +79,9 @@ class CartListReponse{
       carts: List<Cart>.from(
         (json['carts'] as List).map((c) => Cart.fromJson(c)),
       ), 
-      total: json['total'].toDouble, 
-      skip: json['skip'].toDouble, 
-      limit: json['limit'].toDouble
+      total: double.parse((json['total'] ?? 0).toString()),
+      skip: json['skip'], 
+      limit: json['limit']
     );
   }
 

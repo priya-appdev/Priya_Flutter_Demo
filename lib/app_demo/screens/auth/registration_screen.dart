@@ -715,15 +715,22 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                   onPressed: () async {
                     final error = _validateFields();
 
-                    if (error != null) {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error)));
+                    if (error != null){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(error))
+                      );
                       return;
-                    } else {
-                      await ref
-                          .read(userProvider.notifier)
-                          .setUser(
+                    }
+
+                    showDialog(
+                      context: context, 
+                      builder: (context) => const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    );
+                    try{
+                        await ref.read(userProvider.notifier)
+                        .setUser(
                             firstName: firstName.text,
                             lastName: lastName.text,
                             email: emailAddress.text,
@@ -736,16 +743,54 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                             streetAddress: streetAddress.text,
                             message: message.text,
                           );
-                      ScaffoldMessenger.of(context).showSnackBar(
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Registration successful'))
-                      );
-                      Navigator.push(
+                        );
+                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => TabbarControllerPage(),
                         ),
                       );
+                    }catch (e){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error: $e'))
+                      );
                     }
+
+                    // if (error != null) {
+                    //   ScaffoldMessenger.of(
+                    //     context,
+                    //   ).showSnackBar(SnackBar(content: Text(error)));
+                    //   return;
+                    // } else {
+                    //   await ref
+                    //       .read(userProvider.notifier)
+                    //       .setUser(
+                    //         firstName: firstName.text,
+                    //         lastName: lastName.text,
+                    //         email: emailAddress.text,
+                    //         phone: phoneno.text,
+                    //         password: password.text,
+                    //         retypepassword: retypepassword.text,
+                    //         country: contryName.text,
+                    //         stateprovience: stateName.text,
+                    //         city: selectedCity ?? "",
+                    //         streetAddress: streetAddress.text,
+                    //         message: message.text,
+                    //       );
+                    //   await Future.delayed(const Duration(seconds: 5));
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(content: Text('Registration successful'))
+                    //   );
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => TabbarControllerPage(),
+                    //     ),
+                    //   );
+                    // }
                   },
                   style: OutlinedButton.styleFrom(
                     side: .none,

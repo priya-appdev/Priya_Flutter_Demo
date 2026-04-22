@@ -1,3 +1,4 @@
+import 'package:counter_app/app_demo/model/product_model.dart';
 import 'package:counter_app/app_demo/riverpod/cart/cart_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -53,15 +54,58 @@ class CartSection extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          color: Colors.grey[200],
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Cart ID: ${cart.id}',
+              style: TextStyle(fontFamily: 'Poppins',fontSize: 15),
+              ),
+              Text('Total: \$${cart.total.toStringAsFixed(2)}',
+              style: TextStyle(fontFamily: 'Poppins',fontSize: 15),
+              ),
+              Text('Discounted: \$${cart.discountedTotal.toStringAsFixed(2)}',
+              style: TextStyle(fontFamily: 'Poppins',fontSize: 15),
+              )
+            ],
+          ),
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: cart.products.length,
+          itemBuilder: (context,index){
+            final product = cart.products[index];
+            return ProductSection(product: product);
+          }
+        )
+      ],
+    );
+  }
+}
+
+class ProductSection extends StatelessWidget{
+
+  final product;
+
+  const ProductSection({required this.product});
+
+  @override
+  Widget build(BuildContext context){
     return Card(
-          margin: const EdgeInsets.all(16),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-            child: Row(
+      margin: const EdgeInsets.all(10),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
               children: [
                 ClipRect(
                   child: Image.network(
-                    cart.thumbnail,
+                    product.thumbnail,
                     width: 80,
                     height: 80,
                     fit: BoxFit.cover,
@@ -73,7 +117,7 @@ class CartSection extends StatelessWidget{
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'ID: ${cart.id}',
+                        'ID: ${product.id}',
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 15,
@@ -82,7 +126,7 @@ class CartSection extends StatelessWidget{
                       ),
                       SizedBox(height: 5),
                       Text(
-                        cart.title,
+                        product.title,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 15
@@ -94,7 +138,7 @@ class CartSection extends StatelessWidget{
                 )
               ],
             ),
-          ),
-        );
+      ),
+    );
   }
 }

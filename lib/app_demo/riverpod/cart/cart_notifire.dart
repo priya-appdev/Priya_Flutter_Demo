@@ -3,6 +3,7 @@ import 'package:counter_app/app_demo/riverpod/cart/cart_provider.dart';
 import 'package:counter_app/app_demo/riverpod/cart/cart_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:counter_app/api_service.dart';
+import 'package:http/http.dart';
 
 class CartNotifire extends StateNotifier<CartState>{
   CartNotifire(): super(CartState());
@@ -14,17 +15,19 @@ class CartNotifire extends StateNotifier<CartState>{
     try{
       final data = await ProductApiService.getRequest('/carts');
       final List carts = data['carts'];
-      final allProducts = carts
-          .expand((cart) => (cart['products'] as List ?? []))
-          .map((product) => CartProduct.fromJson(product)).toList();
+      final response = CartListReponse.fromJson(data);
+      // final allProducts = carts
+      //     .expand((cart) => (cart['products'] as List ?? []))
+      //     .map((product) => CartProduct.fromJson(product)).toList();
       state = state.copyWith(
-        products: allProducts,
+        carts: response.carts,
         isLoading: false
       );
 
     }catch (e){
       state = state.copyWith(
-        isLoading: false
+        isLoading: false,
+        error: e.toString()
       );
       print('Erro is ${e}');
     }

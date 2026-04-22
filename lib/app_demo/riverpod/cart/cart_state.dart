@@ -3,21 +3,26 @@ import 'package:counter_app/app_demo/model/cart_model.dart';
 
 class CartState {
 
-  final List<CartProduct> products;
+  final List<Cart> carts ;
   final bool isLoading;
+  final String? error;
 
   CartState({
-    this.products = const[],
-    this.isLoading = true
+    this.carts = const[],
+    this.isLoading = false,
+    this.error
   });
 
   CartState copyWith({
-    List<CartProduct>? products ,
-    bool? isLoading
+    List<Cart>? carts ,
+    bool? isLoading,
+    String? error
    }){
     return CartState(
-      products: products ?? this.products,
-      isLoading: isLoading ?? this.isLoading
+      carts: carts ?? this.carts,
+      isLoading: isLoading ?? this.isLoading,
+      error: error ?? this.error
+
     );
    }
 }

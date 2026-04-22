@@ -736,6 +736,9 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                             streetAddress: streetAddress.text,
                             message: message.text,
                           );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Registration successful'))
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(

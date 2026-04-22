@@ -37,10 +37,23 @@ class _CartPage extends ConsumerState<CartRiverPodPage>{
       body: cartState.isLoading ?
       Center(child: CircularProgressIndicator(),) :
       ListView.builder(
-        itemCount: cartState.products.length,
+        itemCount: cartState.carts.length,
         itemBuilder: (context,index){
-        final cartItem = cartState.products[index];
-        return Card(
+        final cartItem = cartState.carts[index];
+        return CartSection(cart: cartItem);
+      })
+    );
+  }
+}
+
+class CartSection extends StatelessWidget{
+  final cart;
+
+  const CartSection({required this.cart});
+
+  @override
+  Widget build(BuildContext context){
+    return Card(
           margin: const EdgeInsets.all(16),
           child: Padding(
             padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
@@ -48,7 +61,7 @@ class _CartPage extends ConsumerState<CartRiverPodPage>{
               children: [
                 ClipRect(
                   child: Image.network(
-                    cartItem.thumbnail,
+                    cart.thumbnail,
                     width: 80,
                     height: 80,
                     fit: BoxFit.cover,
@@ -60,7 +73,7 @@ class _CartPage extends ConsumerState<CartRiverPodPage>{
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'ID: ${cartItem.id}',
+                        'ID: ${cart.id}',
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 15,
@@ -69,7 +82,7 @@ class _CartPage extends ConsumerState<CartRiverPodPage>{
                       ),
                       SizedBox(height: 5),
                       Text(
-                        cartItem.title,
+                        cart.title,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 15
@@ -83,7 +96,5 @@ class _CartPage extends ConsumerState<CartRiverPodPage>{
             ),
           ),
         );
-      })
-    );
   }
 }

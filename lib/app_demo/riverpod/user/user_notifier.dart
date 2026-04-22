@@ -38,6 +38,8 @@ class UserNotifier extends StateNotifier<UserState>{
     required String message
   }) async{
     final pref = await SharedPreferences.getInstance();
+    print('Saving Email: $email');
+    print('Saving Password: $password');
     await pref.setString('firstName',firstName,);
             await pref.setString('lastName',lastName);
             await pref.setString('email',email);
@@ -81,6 +83,11 @@ class UserNotifier extends StateNotifier<UserState>{
 
       final savedEmail = pref.getString('email') ?? "";
       final savedPassword = pref.getString('password') ?? "";
+
+      print('Enterd email ${email}');
+      print('Enterd password ${password}');
+       print('Saved Email: "$savedEmail"');
+      print('Saved Password: "$savedPassword"');
 
       if (email == savedEmail && password == savedPassword){
         await loadUser();

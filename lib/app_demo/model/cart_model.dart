@@ -1,26 +1,35 @@
 
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class Cart{
 
     final int id;
     final List<CartProduct> products;
+    final double total;
+    final double discountedTotal;
+    final int userId;
+    final int totalProducts;
 
     Cart({
       required this.id,
-      required this.products
+      required this.products,
+      required this.total,
+      required this.discountedTotal,
+      required this.userId,
+      required this.totalProducts
     });
 
     factory Cart.fromJson(Map<String,dynamic> json){
      return Cart(
       id: json['id'], 
+      total: json['total'].toDouble(),
+      discountedTotal: json['discountedTotal'].toDouble(),
+      userId: json['userId'],
+      totalProducts: json['totalProducts'],
       products: List<CartProduct>.from(
-        (json['products'] as List).map((p) => CartProduct.fromJson(p)),
-      )); 
-    }
+        (json['products'] as List).map((p) => CartProduct.fromJson(p))
+      )
+    );
+  }
 }
 
 class CartProduct{
@@ -43,12 +52,44 @@ class CartProduct{
     return CartProduct(
       id: json['id'], 
       title: json['title'],
-      price: json['price'].toDouble(),
+      price: double.parse((json['price'] ?? 0).toString()),
       quantity: json['quantity'],
       thumbnail: json['thumbnail'] as String 
     );
   }
 } 
+
+class CartListReponse{
+
+  final List<Cart> carts;
+  final double total;
+  final int skip;
+  final int limit;
+
+  CartListReponse({
+    
+    required this.carts,
+    required this.total,
+    required this.skip,
+    required this.limit,
+  });
+
+  factory CartListReponse.fromJson(Map<String,dynamic> json){
+    return CartListReponse(
+      carts: List<Cart>.from(
+        (json['carts'] as List).map((c) => Cart.fromJson(c)),
+      ), 
+      total: json['total'].toDouble, 
+      skip: json['skip'].toDouble, 
+      limit: json['limit'].toDouble
+    );
+  }
+
+}
+
+
+
+
 
 // {
 //       "id": 1,

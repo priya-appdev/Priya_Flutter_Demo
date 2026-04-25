@@ -54,14 +54,19 @@ class CartSection extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    return Column(
+
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          color: Colors.grey[200],
-          padding: const EdgeInsets.all(10),
+        ClipRect(
+          
+          // color: Colors.grey[200],
+          // padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            
             children: [
               Text('Cart ID: ${cart.id}',
               style: TextStyle(fontFamily: 'Poppins',fontSize: 15),
@@ -85,6 +90,7 @@ class CartSection extends StatelessWidget{
           }
         )
       ],
+    )
     );
   }
 }

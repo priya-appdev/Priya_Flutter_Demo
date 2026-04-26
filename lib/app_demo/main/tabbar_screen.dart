@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../riverpod/user/user_provider.dart';
 import '../riverpod/product/product_provider.dart';
 import '../screens/cart/cart_screen.dart';
+import '../screens/profile/profile_screen.dart';
 
 
 class TabbarControllerPage extends ConsumerStatefulWidget {
@@ -55,7 +56,8 @@ class TabbarControllerPage extends ConsumerStatefulWidget {
 
               ProductRiverpodPage(),
               CartRiverPodPage(),
-              _buildRegistrationPage(),
+              ProfileScreenState()
+              
 
         ]),
         bottomNavigationBar: TabBar(

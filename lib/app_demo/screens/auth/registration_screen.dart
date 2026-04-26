@@ -636,7 +636,7 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                 prefixIcon: Icons.person,
               ),
               SizedBox(height: 15),
-             DropdownMenu(
+             DropdownMenu<String>(
                 hintText: 'Select city',
                 leadingIcon: Icon(Icons.location_city),
                 textStyle: TextStyle(fontFamily: 'Poppins',fontSize: 15),
@@ -648,7 +648,10 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                 ),
                 dropdownMenuEntries: cities.map((city){
                   return DropdownMenuEntry(value: city, label: city);
-                }).toList()
+                }).toList(),
+                onSelected: (value) {
+                  setState(() => selectedCity = value);
+                },
               ),
               SizedBox(height: 15),
               CustomTextFileds(

@@ -1,17 +1,20 @@
 
+import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/custom_text_fileds.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../riverpod/user/user_provider.dart';
 
-class ProfileScreenState extends StatefulWidget{
+class ProfileScreenState extends ConsumerStatefulWidget{
 
   const ProfileScreenState({super.key});
 
   @override
-  State<ProfileScreenState> createState() => _ProfileScreen();
+  ConsumerState<ProfileScreenState> createState() => _ProfileScreen();
 
 }
 
-class _ProfileScreen extends State<ProfileScreenState>{
+class _ProfileScreen extends ConsumerState<ProfileScreenState>{
 
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -23,8 +26,13 @@ class _ProfileScreen extends State<ProfileScreenState>{
   TextEditingController state = TextEditingController();
   TextEditingController city = TextEditingController();
   TextEditingController streetaddress = TextEditingController();
+  TextEditingController phoneno = TextEditingController();
 
   bool showPassword = false;
+  bool isOldPassword = false;
+  bool isNewpassword = false;
+  bool isRetypePassword = false;
+  String? selectedCity;
 
   final List<String> cities = [
     'Ahmedabad',
@@ -34,6 +42,26 @@ class _ProfileScreen extends State<ProfileScreenState>{
     'Pune',
     'Jaipur',
   ];
+
+  @override
+  void initState(){
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      final user = ref.watch(userProvider);
+      firstName.text = user.firstName;
+      lastName.text = user.lastName;
+      email.text = user.email;
+      phoneno.text = user.phone;
+      oldPassword.text = user.password;
+      country.text = user.country;
+      state.text = user.state;
+      streetaddress.text = user.streetaddress;
+      setState(() {
+        selectedCity = cities.contains(user.city) ? user.city : null;
+        print(selectedCity);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -48,7 +76,25 @@ class _ProfileScreen extends State<ProfileScreenState>{
       ),
       actions: [
         IconButton(onPressed: (){
-            
+            showDialog(
+              context: context, 
+              builder: (BuildContext context){
+                return AlertDialog(
+                  title: Text('Alert',
+                  style: TextStyle(fontFamily: 'Poppins',fontSize: 15),),
+                  content: Text('Are you sure you want to logout?',
+                  style: TextStyle(fontFamily: 'Poppins',fontSize: 15)),
+                  actions: [
+                    TextButton(onPressed: (){
+                      Navigator.of(context).pop();
+                    }, child: Text('Cancel',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),)),
+                    TextButton(onPressed: (){
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    }, child: Text('OK',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),))
+                  ],
+                );
+              });
         }, icon: Icon(Icons.exit_to_app))
       ],
     ),
@@ -79,6 +125,14 @@ class _ProfileScreen extends State<ProfileScreenState>{
               hintText: "Enter your email address", 
               prefixIcon: Icons.email),
             SizedBox(
+              height: 15,
+            ),
+            CustomTextFileds(
+              controller: phoneno, 
+              labelText: "Phone no", 
+              hintText: "Enter your phone no" ,
+              prefixIcon: Icons.phone),
+            SizedBox(
               height: 25,
             ),
             Row(
@@ -103,7 +157,6 @@ class _ProfileScreen extends State<ProfileScreenState>{
                 ),
                 SizedBox(width: 10),
                 Text('Show password',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),),
-                
               ],
             ),
             if (showPassword) ...[
@@ -114,7 +167,15 @@ class _ProfileScreen extends State<ProfileScreenState>{
                 controller: oldPassword, 
                 labelText: "Old password", 
                 hintText: "Enter old password", 
-                prefixIcon: Icons.lock),
+                prefixIcon: Icons.lock,
+                obsecureText: isOldPassword,
+                suffixIcon: isOldPassword ? Icons.visibility : Icons.visibility_off,
+                onSuffixIconPressed: (){
+                  setState(() {
+                    isOldPassword = !isOldPassword;
+                  });
+                },
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -122,7 +183,15 @@ class _ProfileScreen extends State<ProfileScreenState>{
                   controller: newPassword, 
                   labelText: "New password", 
                   hintText: "Enter new password", 
-                  prefixIcon: Icons.lock),
+                  obsecureText: isNewpassword,
+                  prefixIcon: Icons.lock,
+                  suffixIcon: isNewpassword ? Icons.visibility : Icons.visibility_off,
+                  onSuffixIconPressed: (){
+                    setState(() {
+                      isNewpassword = !isNewpassword;
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -130,7 +199,15 @@ class _ProfileScreen extends State<ProfileScreenState>{
                   controller: retypePassword, 
                   labelText: "Retype password", 
                   hintText: "Enter new retype password", 
-                  prefixIcon: Icons.lock),
+                  prefixIcon: Icons.lock,
+                  obsecureText: isRetypePassword,
+                  suffixIcon: isRetypePassword ? Icons.visibility : Icons.visibility_off,
+                  onSuffixIconPressed: (){
+                    setState(() {
+                      isRetypePassword = !isRetypePassword;
+                    });
+                  },
+                ),
             ],
             SizedBox(
               height: 25,
@@ -151,6 +228,7 @@ class _ProfileScreen extends State<ProfileScreenState>{
                 height: 15,
               ),
               DropdownMenu(
+                initialSelection: selectedCity,
                 hintText: 'Enter your city',
                 leadingIcon: Icon(Icons.location_city),
                 textStyle: TextStyle(fontFamily: 'Poppins',fontSize: 15),
@@ -183,14 +261,41 @@ class _ProfileScreen extends State<ProfileScreenState>{
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
+                      offset: Offset(0, 3),
                       blurRadius: 8,
-                      offset: Offset(0, 3)
+                      
                     )
                   ]
                 ),
-                child: OutlinedButton(onPressed: (){
-
-                }, child: Text('Update profile',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),)),
+                child: OutlinedButton(onPressed: () async{
+                    try{
+                      await ref.read(userProvider.notifier).setUser(
+                        firstName: firstName.text, 
+                        lastName: lastName.text, 
+                        email: email.text, 
+                        phone: phoneno.text, 
+                        password: oldPassword.text, 
+                        retypepassword: retypePassword.text, 
+                        country: country.text, 
+                        stateprovience: state.text, 
+                        city: selectedCity ?? "", 
+                        streetAddress: streetaddress.text, 
+                        message: ""
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile updated')));
+                    }catch (e){
+                      print('Error while saving ${e}');
+                      
+                    }
+                }, style: OutlinedButton.styleFrom(
+                  side: .none,
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),
+                child: Text('Update profile',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),)),
               )
           ],     
         ),

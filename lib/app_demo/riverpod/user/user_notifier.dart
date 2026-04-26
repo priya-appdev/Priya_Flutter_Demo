@@ -13,7 +13,7 @@ class UserNotifier extends StateNotifier<UserState>{
       firstName: pref.getString('firstName') ?? "",
       lastName: pref.getString('lastName') ?? "",
       email: pref.getString('email') ?? "",
-      phone:pref.getString('phone') ?? "",
+      phone:pref.getString('phoneno') ?? "",
       password:pref.getString('password') ?? "",
       retypepassword: pref.getString('retypepassword') ?? "",
       city:pref.getString('city') ?? "",
@@ -49,7 +49,7 @@ class UserNotifier extends StateNotifier<UserState>{
             await pref.setString('country',country);
             await pref.setString('state',stateprovience);
             await pref.setString('city',city);
-            await pref.setString('streetAddress',streetAddress);
+            await pref.setString('streetaddress',streetAddress);
             await pref.setString('message',message);
 
     state = state.copyWith(
@@ -83,11 +83,13 @@ class UserNotifier extends StateNotifier<UserState>{
 
       final savedEmail = pref.getString('email') ?? "";
       final savedPassword = pref.getString('password') ?? "";
+      final phoneno = pref.getString('phoneno') ?? "";
 
       print('Enterd email ${email}');
       print('Enterd password ${password}');
        print('Saved Email: "$savedEmail"');
       print('Saved Password: "$savedPassword"');
+      print('Saved Password: "$phoneno"');
 
       if (email == savedEmail && password == savedPassword){
         await loadUser();

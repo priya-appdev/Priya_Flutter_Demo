@@ -23,4 +23,22 @@ class Product{
       thumbnail: json['thumbnail']
     );
   }
+
+  Map<String,dynamic> toMap(){
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'description': description,
+      'thumbnail': thumbnail
+    };
+  }
+
+  factory Product.fromMap(Map<String,dynamic> map){
+    return Product(
+      id: map['id'], 
+      title: map['title'], 
+      price: map['price'], 
+      description: map['description'], thumbnail: map['thumbnail']);
+  }
 }

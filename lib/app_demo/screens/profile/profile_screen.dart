@@ -1,5 +1,5 @@
 
-import 'package:counter_app/model/provider.model.dart';
+
 import 'package:flutter/material.dart';
 import '../../widgets/custom_text_fileds.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -4,10 +4,8 @@ import 'package:counter_app/app_demo/screens/auth/registration_screen.dart';
 import 'package:counter_app/app_demo/screens/auth/forgotpassword_screen.dart';
 import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
-import 'package:counter_app/app_demo/screens/product/product_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
-import 'package:counter_app/app_demo/screens/product/product_screen.dart';
 import '../../riverpod/user/user_provider.dart';
 import '../../widgets/custom_text_fileds.dart';
 

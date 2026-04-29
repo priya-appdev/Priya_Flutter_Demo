@@ -1,5 +1,6 @@
 
 
+import 'package:counter_app/main.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/custom_text_fileds.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,12 +48,11 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
   void initState(){
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
-      final user = ref.watch(userProvider);
+      final user = ref.read(userProvider);
       firstName.text = user.firstName;
       lastName.text = user.lastName;
       email.text = user.email;
       phoneno.text = user.phone;
-      oldPassword.text = user.password;
       country.text = user.country;
       state.text = user.state;
       streetaddress.text = user.streetaddress;
@@ -64,6 +64,21 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
   }
 
   @override
+  void dispose(){
+    firstName.dispose();
+    lastName.dispose();
+    email.dispose();
+    oldPassword.dispose();
+    newPassword.dispose();
+    retypePassword.dispose();
+    country.dispose();
+    state.dispose();
+    city.dispose();
+    streetaddress.dispose();
+    phoneno.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
@@ -74,6 +89,7 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
           fontFamily: 'Poppins'
         ),
       ),
+      
       actions: [
         IconButton(onPressed: (){
             showDialog(
@@ -88,9 +104,12 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
                     TextButton(onPressed: (){
                       Navigator.of(context).pop();
                     }, child: Text('Cancel',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),)),
-                    TextButton(onPressed: (){
+                    TextButton(onPressed: () async{
                       Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                      await ref.read(userProvider.notifier).logout();
+                      if (!context.mounted) return;
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (_) => const AuthGate()), (route) => false);
                     }, child: Text('OK',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),))
                   ],
                 );
@@ -238,6 +257,11 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
+                onSelected: (value){
+                  setState(() {
+                    selectedCity = value;
+                  });
+                },
                 dropdownMenuEntries: cities.map((city){
                   return DropdownMenuEntry(value: city, label: city);
                 }).toList()
@@ -269,19 +293,19 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
                 ),
                 child: OutlinedButton(onPressed: () async{
                     try{
-                      await ref.read(userProvider.notifier).setUser(
+                      await ref.read(userProvider.notifier).updateUser(
                         firstName: firstName.text, 
                         lastName: lastName.text, 
                         email: email.text, 
                         phone: phoneno.text, 
                         password: oldPassword.text, 
-                        retypepassword: retypePassword.text, 
                         country: country.text, 
                         stateprovience: state.text, 
                         city: selectedCity ?? "", 
-                        streetAddress: streetaddress.text, 
-                        message: ""
+                        streetaddress: streetaddress.text, 
+                        
                       );
+                      if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile updated')));
                     }catch (e){
                       print('Error while saving ${e}');

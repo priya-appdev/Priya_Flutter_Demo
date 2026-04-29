@@ -1,4 +1,5 @@
 import 'package:counter_app/app_demo/riverpod/product/product_provider.dart';
+import 'package:counter_app/app_demo/riverpod/user/user_provider.dart';
 import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
 import 'registration_page.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:counter_app/Riverpod/product_page.dart';
 import 'app_demo/main/tabbar_screen.dart';
 import 'app_demo/screens/auth/login_screen.dart';
+
 //-----------------------
 // USING THE PROVIDERS
 //---------------------
@@ -60,7 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoginpageState(),
+      home: AuthGate (),
     );
   }
 }
@@ -72,7 +74,11 @@ class MyHomePage extends StatefulWidget {
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
 
-  // This class is the configuration for the state. It holds the values (in this
+  // This class 
+  //
+  //
+  //
+  // the configuration for the state. It holds the values (in this
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
@@ -145,5 +151,22 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+}
+
+
+class AuthGate extends ConsumerWidget{
+
+  const AuthGate({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref){
+    final user = ref.watch(userProvider);
+
+    if (user.email.isNotEmpty){
+      return  TabbarControllerPage();
+    }
+
+    return  LoginpageState();
   }
 }

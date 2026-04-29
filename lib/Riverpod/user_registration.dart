@@ -36,7 +36,7 @@ class _UserFromPageState extends ConsumerState<UserFormPage>{
           TextField(
             controller: namecontroller,
             onChanged: (value){
-              ref.read(userProvider.notifier).updateName(value);
+              // ref.read(userProvider.notifier).updateName(value);
             },
           ),
           ElevatedButton(onPressed: (){

@@ -739,7 +739,6 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                             email: emailAddress.text,
                             phone: phoneno.text,
                             password: password.text,
-                            retypepassword: retypepassword.text,
                             country: contryName.text,
                             stateprovience: stateName.text,
                             city: selectedCity ?? "",

@@ -30,6 +30,24 @@ class Cart{
       )
     );
   }
+
+  Map<String,dynamic> toMap() =>{
+    'id':id,
+    'userID': userId,
+    'total': total,
+    'discountedTotal':discountedTotal,
+    'totalProducts':totalProducts
+  };
+
+  factory Cart.fromMap(Map<String,dynamic> map , List<CartProduct> products){
+    return Cart(
+      id: map['id'], 
+      products: products,
+      total: map['total'],
+      discountedTotal: map['discountedTotal'],
+      userId: map['userId'],
+      totalProducts: map['totalProducts']);
+  }
 }
 
 class CartProduct{
@@ -57,6 +75,25 @@ class CartProduct{
       thumbnail: json['thumbnail'] as String 
     );
   }
+
+  Map<String,dynamic> toMap(int cartID) =>{
+    'cartID':cartID,
+    'productId':id,
+    'title':title,
+    'price':price,
+    'quantity':quantity,
+    'thumbnail': thumbnail
+  };
+
+  factory CartProduct.fromMap(Map<String,dynamic> map){
+    return CartProduct(
+      id: map['id'], 
+      title: map['title'], 
+      price: map['price'], 
+      quantity: map['quantity'], 
+      thumbnail: map['thumbnail']);
+  }
+
 } 
 
 class CartListReponse{

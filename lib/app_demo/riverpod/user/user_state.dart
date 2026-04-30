@@ -6,7 +6,6 @@ class UserState{
   final String email;
   final String phone;
   final String password;
-  final String retypepassword;
   final String country;
   final String state;
   final String city;
@@ -20,7 +19,6 @@ class UserState{
     this.email = "",
     this.phone = "",
     this.password = "",
-    this.retypepassword = "",
     this.country = "",
     this.state = "",
     this.city = "",
@@ -35,7 +33,6 @@ class UserState{
     String? email,
     String? phone,
     String? password,
-    String? retypepassword,
     String? city,
     String? state,
     String? country,
@@ -49,7 +46,6 @@ class UserState{
       email: email ?? this.email,
       phone: phone ?? this.phone,
       password: password ?? this.password,
-      retypepassword: retypepassword ?? this.retypepassword,
       city: city ?? this.city,
       state: state ?? this.state,
       country: country ?? this.country,
@@ -66,7 +62,6 @@ class UserState{
       'email': email,
       'phone': phone,
       'password': password,
-      'retypepassword': retypepassword,
       'country': country,
       'state': state,
       'city': city,
@@ -83,7 +78,6 @@ class UserState{
       email: map['email'] ?? "",
       phone: map['phone'] ?? "",
       password: map['password'] ?? "",
-      retypepassword: map['retypepassword'] ?? "",
       country: map['country'] ?? "",
       state: map['state'] ?? "",
       city: map['city'] ?? "",

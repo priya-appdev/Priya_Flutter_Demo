@@ -2,7 +2,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:counter_app/app_demo/riverpod/user/user_state.dart';
-import 'package:counter_app/app_demo/database/user_database.dart';
+import 'package:counter_app/app_demo/database/user_dao.dart';
 
 // class UserNotifier extends StateNotifier<UserState>{
 //   UserNotifier() : super(UserState());
@@ -104,6 +104,7 @@ import 'package:counter_app/app_demo/database/user_database.dart';
 class UserNotifier  extends StateNotifier<UserState>{
 
   UserNotifier() : super(UserState());
+  final _dao = UserDao();
 
   static const _currentEmailKey = 'currentUserEmail';
 
@@ -113,8 +114,8 @@ class UserNotifier  extends StateNotifier<UserState>{
 
     if (email == null || email.isEmpty) return;
 
-    final user = await UserDatabase.instance.getUserByEmail(email);
-    if (user != null){
+    final user = await _dao.getUserByEmail(email);
+    if (user != null) {
       state = user;
     }
   }
@@ -125,7 +126,7 @@ class UserNotifier  extends StateNotifier<UserState>{
     required String email,
     required String phone,
     required String password,
-    required String retypepassword,
+    
     required String country,
     required String stateprovience,
     required String city,
@@ -138,18 +139,16 @@ class UserNotifier  extends StateNotifier<UserState>{
       email: email,
       phone: phone,
       password: password,
-      retypepassword: retypepassword,
       country: country,
       state: stateprovience,
       city: city,
       streetaddress: streetAddress,
       message: message,
     );
-
-    final newId = await UserDatabase.instance.insertUser(user);
+    final newID = await _dao.insertUser(user);
     final pref = await SharedPreferences.getInstance();
     await pref.setString(_currentEmailKey,email);
-    state = user.copyWith(id: newId);
+    state = user.copyWith(id: newID);
   }
 
   Future<bool> login({
@@ -157,7 +156,7 @@ class UserNotifier  extends StateNotifier<UserState>{
     required String email,
     required String password,
   }) async{
-    final user = await UserDatabase.instance.login(email, password);
+    final user = await _dao.login(email, password);
 
     if (user == null) return false;
 
@@ -200,7 +199,7 @@ class UserNotifier  extends StateNotifier<UserState>{
       message: message
     );
 
-    await UserDatabase.instance.updateUser(updatedUser);
+    await _dao.updateUser(updatedUser);
     state = updatedUser;
 
   }

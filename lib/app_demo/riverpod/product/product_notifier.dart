@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:counter_app/app_demo/model/product_model.dart';
 import 'package:counter_app/api_service.dart';
-import 'package:counter_app/app_demo/database/product_databse.dart';
+import 'package:counter_app/app_demo/database/product_dao.dart';
 import 'product_state.dart';
 
 class ProductNotifier extends StateNotifier<ProductState> {
   ProductNotifier() : super(ProductState());
+
+  final _dao = ProductDao();
 
   Future<void> fetchProduct() async {
     print('🚀 fetchProduct() called');
@@ -13,7 +15,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
 
     // 1. Load cached data from SQLite first
     try {
-      final cached = await ProductDatabse.instance.getProducts();
+      final cached = await _dao.getProducts();
       print('📦 Cached products in DB: ${cached.length}');
       if (cached.isNotEmpty) {
         state = state.copyWith(products: cached, isLoading: false);
@@ -34,10 +36,11 @@ class ProductNotifier extends StateNotifier<ProductState> {
 
       // 3. Save fresh data to SQLite
       try {
-        await ProductDatabse.instance.clearProdcut();
-        await ProductDatabse.instance.insertProductList(productList);
+        
+        await _dao.insertProductList(productList);
 
-        final saved = await ProductDatabse.instance.getProducts();
+        final saved = await _dao.getProducts();
+        // final saved = await ProductDatabse.instance.getProducts();
         print('✅ DB has ${saved.length} products after save');
         if (saved.isNotEmpty) {
           print('First product: ${saved.first.title}');

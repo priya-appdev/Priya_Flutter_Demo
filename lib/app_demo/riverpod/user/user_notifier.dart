@@ -1,4 +1,3 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:counter_app/app_demo/riverpod/user/user_state.dart';
@@ -6,7 +5,6 @@ import 'package:counter_app/app_demo/database/user_dao.dart';
 
 // class UserNotifier extends StateNotifier<UserState>{
 //   UserNotifier() : super(UserState());
-
 
 //   Future<void> loadUser() async{
 //     final pref = await SharedPreferences.getInstance();
@@ -100,15 +98,13 @@ import 'package:counter_app/app_demo/database/user_dao.dart';
 //   }
 // }
 
-
-class UserNotifier  extends StateNotifier<UserState>{
-
+class UserNotifier extends StateNotifier<UserState> {
   UserNotifier() : super(UserState());
   final _dao = UserDao();
 
   static const _currentEmailKey = 'currentUserEmail';
 
-  Future<void> loadUser() async{
+  Future<void> loadUser() async {
     final pref = await SharedPreferences.getInstance();
     final email = pref.getString(_currentEmailKey);
 
@@ -122,17 +118,17 @@ class UserNotifier  extends StateNotifier<UserState>{
 
   Future<void> setUser({
     required String firstName,
-     required String lastName,
+    required String lastName,
     required String email,
     required String phone,
     required String password,
-    
     required String country,
     required String stateprovience,
     required String city,
     required String streetAddress,
-    required String message
-  }) async{
+    required String message,
+    required String profileImagePath,
+  }) async {
     final user = UserState(
       firstName: firstName,
       lastName: lastName,
@@ -144,18 +140,15 @@ class UserNotifier  extends StateNotifier<UserState>{
       city: city,
       streetaddress: streetAddress,
       message: message,
+      profileImagePath: profileImagePath,
     );
     final newID = await _dao.insertUser(user);
     final pref = await SharedPreferences.getInstance();
-    await pref.setString(_currentEmailKey,email);
+    await pref.setString(_currentEmailKey, email);
     state = user.copyWith(id: newID);
   }
 
-  Future<bool> login({
-
-    required String email,
-    required String password,
-  }) async{
+  Future<bool> login({required String email, required String password}) async {
     final user = await _dao.login(email, password);
 
     if (user == null) return false;
@@ -167,14 +160,13 @@ class UserNotifier  extends StateNotifier<UserState>{
     return true;
   }
 
-  Future<void> logout() async{
+  Future<void> logout() async {
     final pref = await SharedPreferences.getInstance();
     await pref.remove(_currentEmailKey);
     state = UserState();
   }
 
   Future<void> updateUser({
-
     String? firstName,
     String? lastName,
     String? email,
@@ -185,7 +177,8 @@ class UserNotifier  extends StateNotifier<UserState>{
     String? city,
     String? streetaddress,
     String? message,
-  }) async{
+    String? profilImagePath,
+  }) async {
     final updatedUser = state.copyWith(
       firstName: firstName,
       lastName: lastName,
@@ -196,12 +189,11 @@ class UserNotifier  extends StateNotifier<UserState>{
       state: stateprovience,
       city: city,
       streetaddress: streetaddress,
-      message: message
+      message: message,
+      profileImagePath: profilImagePath,
     );
 
     await _dao.updateUser(updatedUser);
     state = updatedUser;
-
   }
-
 }

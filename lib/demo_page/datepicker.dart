@@ -1,6 +1,6 @@
 import 'package:counter_app/api_service.dart';
-import 'package:counter_app/dynamic_list.dart';
-import 'package:counter_app/textFiledForm.dart';
+import 'package:counter_app/demo_page/dynamic_list.dart';
+import 'package:counter_app/demo_page/textFiledForm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -4,31 +4,28 @@ import 'package:counter_app/app_demo/riverpod/user/user_state.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class AppDatabase{
-
+class AppDatabase {
   AppDatabase._();
   static final AppDatabase instance = AppDatabase._();
   static Database? _db;
 
-  Future<Database> get database async{
+  Future<Database> get database async {
     if (_db != null) return _db!;
     _db = await _initDB();
     return _db!;
   }
 
-  Future<Database> _initDB() async{
-
+  Future<Database> _initDB() async {
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath,'app.db');
+    final path = join(dbPath, 'app.db');
     print('AppDatabase path: $path');
 
     return openDatabase(
       path,
       version: 1,
-      onCreate: (db,version) async{
+      onCreate: (db, version) async {
         print('onCreate firing — creating all tables');
-        await db.execute(
-          '''
+        await db.execute('''
             CREATE TABLE  users(
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               firstName TEXT,
@@ -40,12 +37,11 @@ class AppDatabase{
               state TEXT,
               city TEXT,
               streetaddress TEXT,
-              message TEXT
+              message TEXT,
+              profileImagePath TEXT
             )
-          '''
-        );
-        await db.execute(
-          '''
+          ''');
+        await db.execute('''
             CREATE TABLE products(
               id INTEGER PRIMARY KEY,
               title TEXT,
@@ -53,11 +49,9 @@ class AppDatabase{
               description TEXT,
               thumbnail TEXT
             )
-          '''
-        );
+          ''');
 
-        await db.execute(
-          '''
+        await db.execute('''
             CREATE TABLE carts(
               id INTEGER PRIMARY KEY,
               userId INTEGER,
@@ -65,11 +59,9 @@ class AppDatabase{
               discountedTotal REAL,
               totalProducts INTEGER
             )
-          '''
-        );
+          ''');
 
-        await db.execute(
-          '''
+        await db.execute('''
             CREATE TABLE cart_products(
               rowId INTEGER PRIMARY KEY AUTOINCREMENT,
               cartId INTEGER,
@@ -80,103 +72,98 @@ class AppDatabase{
               thumbnail TEXT,
               FOREIGN KEY (cartId) REFERENCES carts(id) ON DELETE CASCADE
             )
-          '''
-        );
-
-      }
+          ''');
+      },
     );
   }
 }
 
-class UserDao{
-
+class UserDao {
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  Future<int> insertUser(UserState user) async{
-
+  Future<int> insertUser(UserState user) async {
     final db = await _db;
-    return db.insert('users', user.toMap(),conflictAlgorithm: ConflictAlgorithm.replace);
+    return db.insert(
+      'users',
+      user.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
-  Future<UserState?> login(String email,String password) async{
+  Future<UserState?> login(String email, String password) async {
     final db = await _db;
-    final rows = await db.query('users',
-        where: 'email = ? AND password = ?',
-        whereArgs: [email,password],limit: 1
+    final rows = await db.query(
+      'users',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+      limit: 1,
     );
     if (rows.isEmpty) return null;
     return UserState.fromMap(rows.first);
   }
-
 }
 
-class ProductDao{
-
+class ProductDao {
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  Future<void> insertProductList(List<Product> products) async{
-
+  Future<void> insertProductList(List<Product> products) async {
     final db = await _db;
     final batch = db.batch();
 
-    for (final p in products){
-      batch.insert('products', p.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace
+    for (final p in products) {
+      batch.insert(
+        'products',
+        p.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
     await batch.commit(noResult: true);
   }
 
-  Future<List<Product>> getProducts() async{
+  Future<List<Product>> getProducts() async {
     final db = await _db;
     final rows = await db.query('products');
     return rows.map(Product.fromMap).toList();
   }
 }
 
-class CartDao{
-
+class CartDao {
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  Future<void> insertCartList(List<Cart> carts) async{
-
+  Future<void> insertCartList(List<Cart> carts) async {
     final db = await _db;
     final batch = db.batch();
 
-    for( final cart in carts){
-      batch.insert('carts', cart.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
+    for (final cart in carts) {
+      batch.insert(
+        'carts',
+        cart.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
 
-    batch.delete('cart_products',
-      where: 'cartId = ?',whereArgs: [cart.id]
-    );
+      batch.delete('cart_products', where: 'cartId = ?', whereArgs: [cart.id]);
 
-    for (final p in cart.products){
-      batch.insert('cart_products', p.toMap(cart.id));
+      for (final p in cart.products) {
+        batch.insert('cart_products', p.toMap(cart.id));
+      }
     }
-
-   }
-   await batch.commit(noResult: true);
+    await batch.commit(noResult: true);
   }
 
-  Future<List<Cart>> getCarts() async{
-
+  Future<List<Cart>> getCarts() async {
     final db = await _db;
     final cartsRows = await db.query('carts');
 
     final result = <Cart>[];
-    for (final row in cartsRows){
+    for (final row in cartsRows) {
       final productRows = await db.query(
         'cart_products',
         where: 'cartId = ?',
         whereArgs: [row['id']],
       );
       final products = productRows.map((r) => CartProduct.fromMap(r)).toList();
-      result.add(Cart.fromMap(row,products));
+      result.add(Cart.fromMap(row, products));
     }
     return result;
   }
-
-
 }

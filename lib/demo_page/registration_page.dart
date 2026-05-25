@@ -1,4 +1,4 @@
-import 'package:counter_app/example.dart';
+import 'package:counter_app/demo_page/example.dart';
 import 'package:flutter/material.dart';
 
 class Registrationpage extends StatefulWidget {

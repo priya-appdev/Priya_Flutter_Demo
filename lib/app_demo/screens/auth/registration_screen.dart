@@ -597,13 +597,14 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                 hintText: 'Enter your password',
                 prefixIcon: Icons.lock,
                 obsecureText: isShowpassword,
-                suffixIcon: isShowpassword ? 
-                    Icons.visibility : Icons.visibility_off,
-                onSuffixIconPressed: (){
+                suffixIcon: isShowpassword
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                onSuffixIconPressed: () {
                   setState(() {
                     isShowpassword = !isShowpassword;
                   });
-                }
+                },
               ),
               SizedBox(height: 15),
               CustomTextFileds(
@@ -636,17 +637,17 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                 prefixIcon: Icons.person,
               ),
               SizedBox(height: 15),
-             DropdownMenu<String>(
+              DropdownMenu<String>(
                 hintText: 'Select city',
                 leadingIcon: Icon(Icons.location_city),
-                textStyle: TextStyle(fontFamily: 'Poppins',fontSize: 15),
+                textStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                 expandedInsets: EdgeInsets.zero,
                 inputDecorationTheme: InputDecorationTheme(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  )
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                dropdownMenuEntries: cities.map((city){
+                dropdownMenuEntries: cities.map((city) {
                   return DropdownMenuEntry(value: city, label: city);
                 }).toList(),
                 onSelected: (value) {
@@ -660,9 +661,7 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                 hintText: 'Enter your street address',
                 prefixIcon: Icons.home,
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               SizedBox(
                 height: 100,
                 child: Stack(
@@ -671,30 +670,32 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                       controller: message,
                       maxLines: null,
                       minLines: 4,
-                      
+
                       textAlignVertical: TextAlignVertical.top,
                       decoration: InputDecoration(
                         hintText: 'Message',
                         hintStyle: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 15
+                          fontSize: 15,
                         ),
                         labelText: 'Enter your message',
                         labelStyle: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 15
+                          fontSize: 15,
                         ),
 
                         alignLabelWithHint: true,
                         contentPadding: EdgeInsets.fromLTRB(50, 16, 12, 12),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        
                       ),
                     ),
-                    Positioned(left:12,top: 16,
-                      child: Icon(Icons.message,size: 24,))
+                    Positioned(
+                      left: 12,
+                      top: 16,
+                      child: Icon(Icons.message, size: 24),
+                    ),
                   ],
                 ),
               ),
@@ -718,22 +719,22 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                   onPressed: () async {
                     final error = _validateFields();
 
-                    if (error != null){
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(error))
-                      );
+                    if (error != null) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(error)));
                       return;
                     }
 
                     showDialog(
-                      context: context, 
-                      builder: (context) => const Center(
-                        child: CircularProgressIndicator(),
-                      )
+                      context: context,
+                      builder: (context) =>
+                          const Center(child: CircularProgressIndicator()),
                     );
-                    try{
-                        await ref.read(userProvider.notifier)
-                        .setUser(
+                    try {
+                      await ref
+                          .read(userProvider.notifier)
+                          .setUser(
                             firstName: firstName.text,
                             lastName: lastName.text,
                             email: emailAddress.text,
@@ -744,21 +745,24 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                             city: selectedCity ?? "",
                             streetAddress: streetAddress.text,
                             message: message.text,
+                            profileImagePath: "",
                           );
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Registration successful'))
-                        );
-                       Navigator.push(
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Registration successful'),
+                        ),
+                      );
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => TabbarControllerPage(),
                         ),
                       );
-                    }catch (e){
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error: $e'))
-                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text('Error: $e')));
                     }
 
                     // if (error != null) {

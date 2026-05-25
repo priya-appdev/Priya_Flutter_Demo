@@ -1,5 +1,4 @@
-class UserState{
-
+class UserState {
   final int? id;
   final String firstName;
   final String lastName;
@@ -11,6 +10,7 @@ class UserState{
   final String city;
   final String streetaddress;
   final String message;
+  final String profileImagePath;
 
   UserState({
     this.id,
@@ -23,7 +23,8 @@ class UserState{
     this.state = "",
     this.city = "",
     this.streetaddress = "",
-    this.message = ""
+    this.message = "",
+    this.profileImagePath = "",
   });
 
   UserState copyWith({
@@ -38,6 +39,7 @@ class UserState{
     String? country,
     String? streetaddress,
     String? message,
+    String? profileImagePath,
   }) {
     return UserState(
       id: id ?? this.id,
@@ -51,13 +53,14 @@ class UserState{
       country: country ?? this.country,
       streetaddress: streetaddress ?? this.streetaddress,
       message: message ?? this.message,
+      profileImagePath: profileImagePath ?? this.profileImagePath,
     );
   }
 
-  Map<String,dynamic> toMap() {
+  Map<String, dynamic> toMap() {
     return {
       if (id != null) 'id': id,
-      'firstName' : firstName,
+      'firstName': firstName,
       'lastName': lastName,
       'email': email,
       'phone': phone,
@@ -66,11 +69,12 @@ class UserState{
       'state': state,
       'city': city,
       'streetaddress': streetaddress,
-      'message': message
+      'message': message,
+      'profileImagePath': profileImagePath,
     };
   }
 
-  factory UserState.fromMap(Map<String,dynamic> map){
+  factory UserState.fromMap(Map<String, dynamic> map) {
     return UserState(
       id: map['id'] as int?,
       firstName: map['firstName'] ?? "",
@@ -82,13 +86,8 @@ class UserState{
       state: map['state'] ?? "",
       city: map['city'] ?? "",
       streetaddress: map['streetaddress'] ?? "",
-      message: map['message'] ?? ""
-
+      message: map['message'] ?? "",
+      profileImagePath: map['profileImagePath'] ?? "",
     );
-
   }
-
-
-
-
 }

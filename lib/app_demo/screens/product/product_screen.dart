@@ -1,6 +1,6 @@
 
 
-import 'package:counter_app/ProfilePage.dart';
+import 'package:counter_app/demo_page/ProfilePage.dart';
 import 'package:counter_app/api_service.dart';
 import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';

@@ -1,22 +1,20 @@
-
-
 import 'package:counter_app/main.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../widgets/custom_text_fileds.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../riverpod/user/user_provider.dart';
+import 'package:counter_app/app_demo/riverpod/image/image_provider.dart';
+import 'dart:io';
 
-class ProfileScreenState extends ConsumerStatefulWidget{
-
+class ProfileScreenState extends ConsumerStatefulWidget {
   const ProfileScreenState({super.key});
 
   @override
   ConsumerState<ProfileScreenState> createState() => _ProfileScreen();
-
 }
 
-class _ProfileScreen extends ConsumerState<ProfileScreenState>{
-
+class _ProfileScreen extends ConsumerState<ProfileScreenState> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -45,9 +43,9 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
   ];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final user = ref.read(userProvider);
       firstName.text = user.firstName;
       lastName.text = user.lastName;
@@ -64,7 +62,7 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
   }
 
   @override
-  void dispose(){
+  void dispose() {
     firstName.dispose();
     lastName.dispose();
     email.dispose();
@@ -78,205 +76,349 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
     phoneno.dispose();
     super.dispose();
   }
+
+  void _showPickerOptions(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
+                onTap: () async {
+                  Navigator.pop(ctx);
+
+                  await ref
+                      .read(imageProvider.notifier)
+                      .pickImage(ImageSource.gallery);
+
+                  final image = ref.read(imageProvider).selectedImage;
+                  if (image != null) {
+                    await ref
+                        .read(userProvider.notifier)
+                        .updateUser(profilImagePath: image.path);
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  await ref
+                      .read(imageProvider.notifier)
+                      .pickImage(ImageSource.camera);
+                  final image = ref.read(imageProvider).selectedImage;
+                  if (image != null) {
+                    await ref
+                        .read(userProvider.notifier)
+                        .updateUser(profilImagePath: image.path);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
+    final imageState = ref.watch(imageProvider);
+    final user = ref.watch(userProvider);
+    ImageProvider? bgImage;
+
+    if (imageState.selectedImage != null) {
+      bgImage = FileImage(imageState.selectedImage!);
+    } else if (user.profileImagePath.isNotEmpty) {
+      bgImage = FileImage(File(user.profileImagePath));
+    } else
+      bgImage;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Profile',
-        style: TextStyle(
-          fontSize: 15,
-          fontFamily: 'Poppins'
+        title: Text(
+          'Profile',
+          style: TextStyle(fontSize: 15, fontFamily: 'Poppins'),
         ),
-      ),
-      
-      actions: [
-        IconButton(onPressed: (){
-            showDialog(
-              context: context, 
-              builder: (BuildContext context){
-                return AlertDialog(
-                  title: Text('Alert',
-                  style: TextStyle(fontFamily: 'Poppins',fontSize: 15),),
-                  content: Text('Are you sure you want to logout?',
-                  style: TextStyle(fontFamily: 'Poppins',fontSize: 15)),
-                  actions: [
-                    TextButton(onPressed: (){
-                      Navigator.of(context).pop();
-                    }, child: Text('Cancel',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),)),
-                    TextButton(onPressed: () async{
-                      Navigator.of(context).pop();
-                      await ref.read(userProvider.notifier).logout();
-                      if (!context.mounted) return;
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (_) => const AuthGate()), (route) => false);
-                    }, child: Text('OK',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),))
-                  ],
-                );
-              });
-        }, icon: Icon(Icons.exit_to_app))
-      ],
-    ),
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomTextFileds(
-              controller: firstName, 
-              labelText: "First name", 
-              hintText: "Enter your first name", 
-              prefixIcon: Icons.person),
-            SizedBox(
-                height: 15,
-            ),
-            CustomTextFileds(
-              controller: lastName, 
-              labelText: "Last name", 
-              hintText: "Enter your last name", prefixIcon: Icons.person),
-            SizedBox(
-              height: 15
-            ),
-            CustomTextFileds(
-              controller: email, 
-              labelText: "Email address", 
-              hintText: "Enter your email address", 
-              prefixIcon: Icons.email),
-            SizedBox(
-              height: 15,
-            ),
-            CustomTextFileds(
-              controller: phoneno, 
-              labelText: "Phone no", 
-              hintText: "Enter your phone no" ,
-              prefixIcon: Icons.phone),
-            SizedBox(
-              height: 25,
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      showPassword = !showPassword;
-                    });
-                  },
-                  child: Container(
-                    width: 22,
-                    height: 22,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black
-                      ),
-                      borderRadius: BorderRadius.circular(4)
+
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(
+                      'Alert',
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                     ),
-                    child: showPassword ? Icon(Icons.check,size: 18,color: Colors.black,) : null
+                    content: Text(
+                      'Are you sure you want to logout?',
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+                          await ref.read(userProvider.notifier).logout();
+                          if (!context.mounted) return;
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (_) => const AuthGate()),
+                            (route) => false,
+                          );
+                        },
+                        child: Text(
+                          'OK',
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.exit_to_app),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: GestureDetector(
+                  onTap: () => _showPickerOptions(context, ref),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.grey[300],
+                        backgroundImage: bgImage,
+                        child: bgImage == null
+                            ? const Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Colors.white,
+                              )
+                            : null,
+                      ),
+                      if (imageState.isLoading)
+                        Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black.withOpacity(0.4),
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 3,
+                            ),
+                          ),
+                        ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.lightBlueAccent,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10),
-                Text('Show password',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),),
-              ],
-            ),
-            if (showPassword) ...[
-              SizedBox(
-                height: 15,
               ),
+              if (imageState.error != null)
+                Text(
+                  imageState.error!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              const SizedBox(height: 20),
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () => _showPickerOptions(context, ref),
+                  icon: const Icon(Icons.camera_alt),
+                  label: const Text('Change Photo'),
+                ),
+              ),
+
+              SizedBox(height: 20),
+
               CustomTextFileds(
-                controller: oldPassword, 
-                labelText: "Old password", 
-                hintText: "Enter old password", 
-                prefixIcon: Icons.lock,
-                obsecureText: isOldPassword,
-                suffixIcon: isOldPassword ? Icons.visibility : Icons.visibility_off,
-                onSuffixIconPressed: (){
-                  setState(() {
-                    isOldPassword = !isOldPassword;
-                  });
-                },
-                ),
-                SizedBox(
-                  height: 15,
-                ),
+                controller: firstName,
+                labelText: "First name",
+                hintText: "Enter your first name",
+                prefixIcon: Icons.person,
+              ),
+              SizedBox(height: 15),
+              CustomTextFileds(
+                controller: lastName,
+                labelText: "Last name",
+                hintText: "Enter your last name",
+                prefixIcon: Icons.person,
+              ),
+              SizedBox(height: 15),
+              CustomTextFileds(
+                controller: email,
+                labelText: "Email address",
+                hintText: "Enter your email address",
+                prefixIcon: Icons.email,
+              ),
+              SizedBox(height: 15),
+              CustomTextFileds(
+                controller: phoneno,
+                labelText: "Phone no",
+                hintText: "Enter your phone no",
+                prefixIcon: Icons.phone,
+              ),
+              SizedBox(height: 25),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                    child: Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: showPassword
+                          ? Icon(Icons.check, size: 18, color: Colors.black)
+                          : null,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Show password',
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+                  ),
+                ],
+              ),
+              if (showPassword) ...[
+                SizedBox(height: 15),
                 CustomTextFileds(
-                  controller: newPassword, 
-                  labelText: "New password", 
-                  hintText: "Enter new password", 
+                  controller: oldPassword,
+                  labelText: "Old password",
+                  hintText: "Enter old password",
+                  prefixIcon: Icons.lock,
+                  obsecureText: isOldPassword,
+                  suffixIcon: isOldPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  onSuffixIconPressed: () {
+                    setState(() {
+                      isOldPassword = !isOldPassword;
+                    });
+                  },
+                ),
+                SizedBox(height: 15),
+                CustomTextFileds(
+                  controller: newPassword,
+                  labelText: "New password",
+                  hintText: "Enter new password",
                   obsecureText: isNewpassword,
                   prefixIcon: Icons.lock,
-                  suffixIcon: isNewpassword ? Icons.visibility : Icons.visibility_off,
-                  onSuffixIconPressed: (){
+                  suffixIcon: isNewpassword
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  onSuffixIconPressed: () {
                     setState(() {
                       isNewpassword = !isNewpassword;
                     });
                   },
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: 15),
                 CustomTextFileds(
-                  controller: retypePassword, 
-                  labelText: "Retype password", 
-                  hintText: "Enter new retype password", 
+                  controller: retypePassword,
+                  labelText: "Retype password",
+                  hintText: "Enter new retype password",
                   prefixIcon: Icons.lock,
                   obsecureText: isRetypePassword,
-                  suffixIcon: isRetypePassword ? Icons.visibility : Icons.visibility_off,
-                  onSuffixIconPressed: (){
+                  suffixIcon: isRetypePassword
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  onSuffixIconPressed: () {
                     setState(() {
                       isRetypePassword = !isRetypePassword;
                     });
                   },
                 ),
-            ],
-            SizedBox(
-              height: 25,
-            ),
-            CustomTextFileds(
-              controller: country, 
-              labelText: "Country", 
-              hintText: "Enter your country", prefixIcon: Icons.person),
-              SizedBox(
-                height: 15,
-              ),
+              ],
+              SizedBox(height: 25),
               CustomTextFileds(
-                controller: state, 
-                labelText: "State", 
-                hintText: "Enter your state", 
-                prefixIcon: Icons.home),
-              SizedBox(
-                height: 15,
+                controller: country,
+                labelText: "Country",
+                hintText: "Enter your country",
+                prefixIcon: Icons.person,
               ),
+              SizedBox(height: 15),
+              CustomTextFileds(
+                controller: state,
+                labelText: "State",
+                hintText: "Enter your state",
+                prefixIcon: Icons.home,
+              ),
+              SizedBox(height: 15),
               DropdownMenu(
                 initialSelection: selectedCity,
                 hintText: 'Enter your city',
                 leadingIcon: Icon(Icons.location_city),
-                textStyle: TextStyle(fontFamily: 'Poppins',fontSize: 15),
+                textStyle: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                 expandedInsets: EdgeInsets.zero,
                 inputDecorationTheme: InputDecorationTheme(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-                onSelected: (value){
+                onSelected: (value) {
                   setState(() {
                     selectedCity = value;
                   });
                 },
-                dropdownMenuEntries: cities.map((city){
+                dropdownMenuEntries: cities.map((city) {
                   return DropdownMenuEntry(value: city, label: city);
-                }).toList()
+                }).toList(),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               CustomTextFileds(
-                controller: streetaddress, 
-                labelText: "Enter your street address", 
-                hintText: "Street address", 
-                prefixIcon: Icons.location_city),
-              SizedBox(
-                height: 20,
+                controller: streetaddress,
+                labelText: "Enter your street address",
+                hintText: "Street address",
+                prefixIcon: Icons.location_city,
               ),
+              SizedBox(height: 20),
               Container(
                 width: double.infinity,
                 height: 50,
@@ -287,45 +429,51 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState>{
                       color: Colors.black.withOpacity(0.1),
                       offset: Offset(0, 3),
                       blurRadius: 8,
-                      
-                    )
-                  ]
+                    ),
+                  ],
                 ),
-                child: OutlinedButton(onPressed: () async{
-                    try{
-                      await ref.read(userProvider.notifier).updateUser(
-                        firstName: firstName.text, 
-                        lastName: lastName.text, 
-                        email: email.text, 
-                        phone: phoneno.text, 
-                        password: oldPassword.text, 
-                        country: country.text, 
-                        stateprovience: state.text, 
-                        city: selectedCity ?? "", 
-                        streetaddress: streetaddress.text, 
-                        
-                      );
+                child: OutlinedButton(
+                  onPressed: () async {
+                    try {
+                      await ref
+                          .read(userProvider.notifier)
+                          .updateUser(
+                            firstName: firstName.text,
+                            lastName: lastName.text,
+                            email: email.text,
+                            phone: phoneno.text,
+                            password: oldPassword.text,
+                            country: country.text,
+                            stateprovience: state.text,
+                            city: selectedCity ?? "",
+                            streetaddress: streetaddress.text,
+                          );
                       if (!mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile updated')));
-                    }catch (e){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Profile updated')),
+                      );
+                    } catch (e) {
                       print('Error while saving ${e}');
-                      
                     }
-                }, style: OutlinedButton.styleFrom(
-                  side: .none,
-                  backgroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  )
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: .none,
+                    backgroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'Update profile',
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+                  ),
                 ),
-                child: Text('Update profile',style: TextStyle(fontFamily: 'Poppins',fontSize: 15),)),
-              )
-          ],     
+              ),
+            ],
+          ),
         ),
-        
       ),
-    ),
-  );
-}
+    );
+  }
 }

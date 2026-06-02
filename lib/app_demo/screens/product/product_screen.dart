@@ -1,5 +1,3 @@
-
-
 import 'package:counter_app/demo_page/ProfilePage.dart';
 import 'package:counter_app/api_service.dart';
 import 'package:counter_app/model/provider.model.dart';
@@ -8,11 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:counter_app/app_demo/riverpod/product/product_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:counter_app/app_demo/riverpod/product/product_notifier.dart';
-
+import 'package:counter_app/app_demo/widgets/shimmer_loader.dart';
 
 // class ProductList extends StatefulWidget{
- 
-//   const ProductList({super.key});                       
+
+//   const ProductList({super.key});
 
 //   @override
 //   State<ProductList> createState() => _ProductListPage();
@@ -22,7 +20,7 @@ import 'package:counter_app/app_demo/riverpod/product/product_notifier.dart';
 
 //   //  List<Product> productList = [];
 //   //  bool isLoading = true;
-   
+
 //   @override
 //     void initState(){
 //     super.initState();
@@ -33,11 +31,11 @@ import 'package:counter_app/app_demo/riverpod/product/product_notifier.dart';
 //   @override
 //   Widget build(BuildContext context){
 //     // final userProviderr = context.watch<UserProvider>();
-//     return Consumer2<UserProvider,ProductProvider>(builder: 
+//     return Consumer2<UserProvider,ProductProvider>(builder:
 //     (context,userProvider,ProductProvider,_){
 //        return Scaffold(
 //       appBar: AppBar(
-        
+
 //         leading: IconButton(onPressed: (){
 //           Navigator.pop(context);
 //         }, icon: Icon(Icons.arrow_back)),
@@ -48,14 +46,14 @@ import 'package:counter_app/app_demo/riverpod/product/product_notifier.dart';
 //           }, icon: Icon(Icons.person_pin_circle))
 //         ],
 //       ),
-//       body: ProductProvider.isLoading ? 
-//         Center(child: CircularProgressIndicator(),) : 
+//       body: ProductProvider.isLoading ?
+//         Center(child: CircularProgressIndicator(),) :
 //         ListView.builder(
 //         itemCount: ProductProvider.products.length,
 //         itemBuilder: (context,index){
 //           final product = ProductProvider.products[index];
 //           return Card(
-            
+
 //             margin: EdgeInsets.all(16),
 //             child: Padding(
 //               padding: EdgeInsets.all(16),
@@ -69,7 +67,7 @@ import 'package:counter_app/app_demo/riverpod/product/product_notifier.dart';
 //                 SizedBox(
 //                   height: 10,
 //                 ),
-//                 Text(product.title,style: TextStyle(fontFamily: 'Poppins',fontSize: 15,fontWeight: FontWeight.bold),), 
+//                 Text(product.title,style: TextStyle(fontFamily: 'Poppins',fontSize: 15,fontWeight: FontWeight.bold),),
 //                 SizedBox(
 //                   height: 5,
 //                 ),
@@ -95,117 +93,104 @@ import 'package:counter_app/app_demo/riverpod/product/product_notifier.dart';
 //       ),
 //     );
 //     });
-   
+
 //   }
 
-      // Future<void> _productGetList() async{
-      //   try{
-      //       final data = await ProductApiService.getRequest('/products');
-      //       final List products = data['products'];
-      //       setState(() {
-      //         productList = products.map((json) => Product.fromJson(json)).toList();
-      //         isLoading = false;
-      //       });
-      //   }catch (e){
-      //     setState(() {
-      //       isLoading = false;
-      //     });
-      //     print('Error:$e');
-      //   }
-      // }
+// Future<void> _productGetList() async{
+//   try{
+//       final data = await ProductApiService.getRequest('/products');
+//       final List products = data['products'];
+//       setState(() {
+//         productList = products.map((json) => Product.fromJson(json)).toList();
+//         isLoading = false;
+//       });
+//   }catch (e){
+//     setState(() {
+//       isLoading = false;
+//     });
+//     print('Error:$e');
+//   }
+// }
 // }
 
-
-class ProductRiverpodPage extends ConsumerStatefulWidget{
+class ProductRiverpodPage extends ConsumerStatefulWidget {
   const ProductRiverpodPage({super.key});
 
   @override
   ConsumerState<ProductRiverpodPage> createState() => ProductPage();
 }
 
-class ProductPage extends ConsumerState<ProductRiverpodPage>{
-
+class ProductPage extends ConsumerState<ProductRiverpodPage> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    Future.microtask((){
+    Future.microtask(() {
       ref.read(productProvider.notifier).fetchProduct();
     });
   }
 
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     final productState = ref.watch(productProvider);
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-      
+
         // leading: IconButton(onPressed: (){
 
         // }, icon: Icon(Icons.arrow_back)),
-        title: Text('Product list',style: TextStyle(
-          fontFamily: 'Poppins',
-          fontSize: 15
-        ),),
+        title: Text(
+          'Product list',
+          style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+        ),
       ),
-      body: productState.isLoading 
-            ? Center(child: CircularProgressIndicator(),)
-            : ListView.builder(
+      body: productState.isLoading
+          ? const ProductShimmer()
+          : ListView.builder(
               itemCount: productState.products.length,
-              itemBuilder: (context,index){
+              itemBuilder: (context, index) {
                 final product = productState.products[index];
                 return Card(
                   margin: EdgeInsets.all(16),
                   child: Padding(
                     padding: EdgeInsets.all(16),
                     child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Image.network(
-                          product.thumbnail,height: 120,fit: BoxFit.cover
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Image.network(
+                            product.thumbnail,
+                            height: 120,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        product.title,
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 15
+                        SizedBox(height: 15),
+                        Text(
+                          product.title,
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        product.description,
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 15
+                        SizedBox(height: 10),
+                        Text(
+                          product.description,
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '\$${product.price}',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold
+                        SizedBox(height: 10),
+                        Text(
+                          '\$${product.price}',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  )
                 );
-            })
+              },
+            ),
     );
-
   }
 }

@@ -1,57 +1,54 @@
+class Cart {
+  final int id;
+  final List<CartProduct> products;
+  final double total;
+  final double discountedTotal;
+  final int userId;
+  final int totalProducts;
 
+  Cart({
+    required this.id,
+    required this.products,
+    required this.total,
+    required this.discountedTotal,
+    required this.userId,
+    required this.totalProducts,
+  });
 
-class Cart{
-
-    final int id;
-    final List<CartProduct> products;
-    final double total;
-    final double discountedTotal;
-    final int userId;
-    final int totalProducts;
-
-    Cart({
-      required this.id,
-      required this.products,
-      required this.total,
-      required this.discountedTotal,
-      required this.userId,
-      required this.totalProducts
-    });
-
-    factory Cart.fromJson(Map<String,dynamic> json){
-     return Cart(
-      id: json['id'], 
+  factory Cart.fromJson(Map<String, dynamic> json) {
+    return Cart(
+      id: json['id'],
       total: json['total'].toDouble(),
       discountedTotal: json['discountedTotal'].toDouble(),
       userId: json['userId'],
       totalProducts: json['totalProducts'],
       products: List<CartProduct>.from(
-        (json['products'] as List).map((p) => CartProduct.fromJson(p))
-      )
+        (json['products'] as List).map((p) => CartProduct.fromJson(p)),
+      ),
     );
   }
 
-  Map<String,dynamic> toMap() =>{
-    'id':id,
-    'userID': userId,
+  Map<String, dynamic> toMap() => {
+    'id': id,
+    'userId': userId,
     'total': total,
-    'discountedTotal':discountedTotal,
-    'totalProducts':totalProducts
+    'discountedTotal': discountedTotal,
+    'totalProducts': totalProducts,
   };
 
-  factory Cart.fromMap(Map<String,dynamic> map , List<CartProduct> products){
+  factory Cart.fromMap(Map<String, dynamic> map, List<CartProduct> products) {
     return Cart(
-      id: map['id'], 
+      id: map['productId'],
       products: products,
       total: map['total'],
       discountedTotal: map['discountedTotal'],
       userId: map['userId'],
-      totalProducts: map['totalProducts']);
+      totalProducts: map['totalProducts'],
+    );
   }
 }
 
-class CartProduct{
-  
+class CartProduct {
   final int id;
   final String title;
   final double price;
@@ -63,65 +60,62 @@ class CartProduct{
     required this.title,
     required this.price,
     required this.quantity,
-    required this.thumbnail
+    required this.thumbnail,
   });
 
-  factory CartProduct.fromJson(Map<String, dynamic> json){
+  factory CartProduct.fromJson(Map<String, dynamic> json) {
     return CartProduct(
-      id: json['id'], 
+      id: json['id'],
       title: json['title'],
       price: double.parse((json['price'] ?? 0).toString()),
       quantity: json['quantity'],
-      thumbnail: json['thumbnail'] as String 
+      thumbnail: json['thumbnail'] as String,
     );
   }
 
-  Map<String,dynamic> toMap(int cartID) =>{
-    'cartID':cartID,
-    'productId':id,
-    'title':title,
-    'price':price,
-    'quantity':quantity,
-    'thumbnail': thumbnail
+  Map<String, dynamic> toMap(int cartID) => {
+    'cartId': cartID,
+    'productId': id,
+    'title': title,
+    'price': price,
+    'quantity': quantity,
+    'thumbnail': thumbnail,
   };
 
-  factory CartProduct.fromMap(Map<String,dynamic> map){
+  factory CartProduct.fromMap(Map<String, dynamic> map) {
     return CartProduct(
-      id: map['id'], 
-      title: map['title'], 
-      price: map['price'], 
-      quantity: map['quantity'], 
-      thumbnail: map['thumbnail']);
+      id: map['productId'],
+      title: map['title'],
+      price: map['price'],
+      quantity: map['quantity'],
+      thumbnail: map['thumbnail'],
+    );
   }
+}
 
-} 
-
-class CartListReponse{
-
+class CartListReponse {
   final List<Cart> carts;
   final double total;
   final int skip;
   final int limit;
 
   CartListReponse({
-    
     required this.carts,
     required this.total,
     required this.skip,
     required this.limit,
   });
 
-  factory CartListReponse.fromJson(Map<String,dynamic> json){
+  factory CartListReponse.fromJson(Map<String, dynamic> json) {
     return CartListReponse(
       carts: List<Cart>.from(
         (json['carts'] as List).map((c) => Cart.fromJson(c)),
-      ), 
+      ),
       total: double.parse((json['total'] ?? 0).toString()),
-      skip: json['skip'], 
-      limit: json['limit']
+      skip: json['skip'],
+      limit: json['limit'],
     );
   }
-
 }
 
 

@@ -17,6 +17,7 @@ class AppDatabase {
 
   Future<Database> _initDB() async {
     final dbPath = await getDatabasesPath();
+
     final path = join(dbPath, 'app.db');
     print('AppDatabase path: $path');
 

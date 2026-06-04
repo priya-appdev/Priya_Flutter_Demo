@@ -13,7 +13,7 @@ class CartNotifire extends StateNotifier<CartState> {
   final _dao = CartDao();
 
   Future<void> fetchCart() async {
-    // state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true);
     await Future.delayed(Duration(seconds: 2));
     final cached = await _dao.getCarts();
     if (cached.isNotEmpty) {
@@ -25,7 +25,7 @@ class CartNotifire extends StateNotifier<CartState> {
   }
 
   Future<void> refreshData() async {
-    state = state.copyWith(isLoading: true);
+    //state = state.copyWith(isLoading: true);
     try {
       final data = await ProductApiService.getRequest('/carts');
       final response = CartListReponse.fromJson(data);

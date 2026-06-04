@@ -1,10 +1,14 @@
 // import 'package:counter_app/model/provider.model.dart';
 // import 'package:provider/provider.dart';
+import 'package:counter_app/app_demo/riverpod/image/image_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../riverpod/user/user_provider.dart';
 import '../../widgets/custom_text_fileds.dart';
 import '../../main/tabbar_screen.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:counter_app/app_demo/riverpod/image/image_provider.dart';
+import 'dart:io';
 
 // class RegistrationDemopage extends StatefulWidget {
 //   @override
@@ -542,11 +546,53 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {});
+    Future.microtask(() {
+      ref.read(imageProvider.notifier).clearImage();
+    });
+  }
+
+  void _showPickerOptions(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery', style: TextStyle()),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  await ref
+                      .read(imageProvider.notifier)
+                      .pickImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.camera),
+                title: const Text('Camera'),
+                onTap: () async {
+                  await ref
+                      .read(imageProvider.notifier)
+                      .pickImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final imageState = ref.watch(imageProvider);
+
+    ImageProvider? bgImage;
+
+    if (imageState.selectedImage != null) {
+      bgImage = FileImage(imageState.selectedImage!);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Registarion'),
@@ -563,6 +609,46 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
           clipBehavior: Clip.none,
           child: Column(
             children: [
+              Center(
+                child: GestureDetector(
+                  onTap: () => _showPickerOptions(context, ref),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.grey[300],
+                        backgroundImage: bgImage,
+                        child: bgImage == null
+                            ? const Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Colors.white,
+                              )
+                            : null,
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.lightBlueAccent,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
               CustomTextFileds(
                 controller: firstName,
                 labelText: 'First name',
@@ -745,7 +831,8 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                             city: selectedCity ?? "",
                             streetAddress: streetAddress.text,
                             message: message.text,
-                            profileImagePath: "",
+                            profileImagePath:
+                                imageState.selectedImage?.path ?? "",
                           );
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(

@@ -38,7 +38,7 @@ class Cart {
 
   factory Cart.fromMap(Map<String, dynamic> map, List<CartProduct> products) {
     return Cart(
-      id: map['productId'],
+      id: map['id'],
       products: products,
       total: map['total'],
       discountedTotal: map['discountedTotal'],

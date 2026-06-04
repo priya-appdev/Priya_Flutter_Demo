@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:counter_app/app_demo/model/product_model.dart';
 import 'package:counter_app/api_service.dart';
@@ -9,57 +11,38 @@ class ProductNotifier extends StateNotifier<ProductState> {
 
   final _dao = ProductDao();
 
-  Future<void> fetchProduct() async {
-    print('🚀 fetchProduct() called');
-    state = state.copyWith(isLoading: true);
+  Future<void> refreshData() async {
+    // state = state.copyWith(isLoading: true);
 
-    // 1. Load cached data from SQLite first
-    try {
-      final cached = await _dao.getProducts();
-      print('📦 Cached products in DB: ${cached.length}');
-      if (cached.isNotEmpty) {
-        state = state.copyWith(products: cached, isLoading: false);
-        print('✅ Loaded ${cached.length} products from DB');
-        print('First cached product: ${cached.first.title}');
-      }
-    } catch (e, stack) {
-      print('❌ DB read failed: $e');
-      print('Stack: $stack');
-    }
-
-    // 2. Fetch fresh data from API
     try {
       final data = await ProductApiService.getRequest('/products');
       final List products = data['products'];
-      final productList =
-          products.map((json) => Product.fromJson(json)).toList();
+      final productList = products
+          .map((json) => Product.fromJson(json))
+          .toList();
 
-      // 3. Save fresh data to SQLite
-      try {
-        
-        await _dao.insertProductList(productList);
-
-        final saved = await _dao.getProducts();
-        // final saved = await ProductDatabse.instance.getProducts();
-        print('✅ DB has ${saved.length} products after save');
-        if (saved.isNotEmpty) {
-          print('First product: ${saved.first.title}');
-        }
-      } catch (e, stack) {
-        print('❌ DB write failed: $e');
-        print('Stack: $stack');
-      }
-
+      await _dao.insertProductList(productList);
       state = state.copyWith(products: productList, isLoading: false);
-    } catch (e, stack) {
-      print('❌ API failed: $e');
-      print('Stack: $stack');
+    } catch (e) {
       state = state.copyWith(isLoading: false);
     }
   }
+
+  Future<void> fetchProduct() async {
+    print('🚀 fetchProduct() called');
+    state = state.copyWith(isLoading: true);
+    await Future.delayed(Duration(seconds: 2));
+    final cached = await _dao.getProducts();
+    if (cached.isNotEmpty) {
+      state = state.copyWith(products: cached, isLoading: false);
+      return;
+    }
+    await refreshData();
+  }
 }
 
-final productProvider =
-    StateNotifierProvider<ProductNotifier, ProductState>((ref) {
+final productProvider = StateNotifierProvider<ProductNotifier, ProductState>((
+  ref,
+) {
   return ProductNotifier();
 });

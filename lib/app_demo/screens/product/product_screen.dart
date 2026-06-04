@@ -145,50 +145,70 @@ class ProductPage extends ConsumerState<ProductRiverpodPage> {
           'Product list',
           style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ref.read(productProvider.notifier).refreshData();
+            },
+            icon: Icon(Icons.refresh),
+          ),
+        ],
       ),
       body: productState.isLoading
           ? const ProductShimmer()
-          : ListView.builder(
-              itemCount: productState.products.length,
-              itemBuilder: (context, index) {
-                final product = productState.products[index];
-                return Card(
-                  margin: EdgeInsets.all(16),
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Image.network(
-                            product.thumbnail,
-                            height: 120,
-                            fit: BoxFit.cover,
+          : RefreshIndicator(
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: productState.products.length,
+                itemBuilder: (context, index) {
+                  final product = productState.products[index];
+                  return Card(
+                    margin: EdgeInsets.all(16),
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Image.network(
+                              product.thumbnail,
+                              height: 120,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 15),
-                        Text(
-                          product.title,
-                          style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          product.description,
-                          style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          '\$${product.price}',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
+                          SizedBox(height: 15),
+                          Text(
+                            product.title,
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 10),
+                          Text(
+                            product.description,
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            '\$${product.price}',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
+                  );
+                },
+              ),
+              onRefresh: () async {
+                await ref.read(productProvider.notifier).refreshData();
               },
             ),
     );

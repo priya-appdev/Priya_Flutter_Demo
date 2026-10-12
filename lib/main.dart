@@ -1,10 +1,8 @@
-import 'package:counter_app/app_demo/riverpod/user/user_provider.dart';
+import 'package:counter_app/app_demo/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 //import 'lisview_builder.dart';
-import 'app_demo/screens/auth/login_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'app_demo/main/tabbar_screen.dart';
 
 //-----------------------
 // USING THE PROVIDERS
@@ -43,18 +41,18 @@ void main() async{
 //   runApp(const MyApp());
 // }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: AuthGate (),
+      routerConfig: ref.watch(routeProvider),
     );
   }
 }
@@ -143,22 +141,5 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
-  }
-}
-
-
-class AuthGate extends ConsumerWidget{
-
-  const AuthGate({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref){
-    final user = ref.watch(userProvider);
-
-    if (user.email.isNotEmpty){
-      return  TabbarControllerPage();
-    }
-
-    return  LoginpageState();
   }
 }

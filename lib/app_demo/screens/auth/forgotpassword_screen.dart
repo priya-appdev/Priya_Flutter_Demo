@@ -1,5 +1,5 @@
-import 'package:counter_app/app_demo/screens/auth/createnewpassword_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../widgets/custom_text_fileds.dart';
 
 class ForgotpasswordScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class _ForgotpasswordPage extends State<ForgotpasswordScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
           },
           icon: Icon(Icons.arrow_back),
         ),
@@ -83,12 +83,7 @@ class _ForgotpasswordPage extends State<ForgotpasswordScreen> {
                       ),
                       child: OutlinedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CreateNewPasswordState(),
-                            ),
-                          );
+                          context.push('/login/forgot-password/new-password');
                         },
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -111,7 +106,7 @@ class _ForgotpasswordPage extends State<ForgotpasswordScreen> {
                     SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       child: Text(
                         'Back to login',

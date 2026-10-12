@@ -1,4 +1,3 @@
-import 'package:counter_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../widgets/custom_text_fileds.dart';
@@ -174,12 +173,9 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState> {
                       TextButton(
                         onPressed: () async {
                           Navigator.of(context).pop();
+                          // The router's redirect sends the user to /login
+                          // as soon as they are logged out.
                           await ref.read(userProvider.notifier).logout();
-                          if (!context.mounted) return;
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (_) => const AuthGate()),
-                            (route) => false,
-                          );
                         },
                         child: Text(
                           'OK',

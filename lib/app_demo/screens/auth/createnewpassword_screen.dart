@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:counter_app/app_demo/screens/auth/login_screen.dart';
+import 'package:go_router/go_router.dart';
 import '../../widgets/custom_text_fileds.dart';
 
 class CreateNewPasswordState extends StatefulWidget {
-  @override
+
   const CreateNewPasswordState({super.key});
+
   @override
-  State<CreateNewPasswordState> createState() => Createnewpassword();
+  State<CreateNewPasswordState> createState() => _Createnewpassword();
 }
 
-class Createnewpassword extends State<CreateNewPasswordState> {
+class _Createnewpassword extends State<CreateNewPasswordState> {
 
    TextEditingController newPassword = TextEditingController();
    TextEditingController retypePassword = TextEditingController();
 
-   @override
   bool isNewPassword = true;
   bool isRetypePassword = true;
 
@@ -25,7 +25,7 @@ class Createnewpassword extends State<CreateNewPasswordState> {
         title: Text('Create new password'),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
           },
           icon: Icon(Icons.arrow_back),
         ),
@@ -106,33 +106,8 @@ class Createnewpassword extends State<CreateNewPasswordState> {
                     ),
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    LoginpageState(),
-                            transitionsBuilder:
-                                (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  return SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: Offset(
-                                        -1.0,
-                                        0.0,
-                                      ), // slides from left to right
-                                      end: Offset.zero,
-                                    ).animate(animation),
-                                    child: child,
-                                  );
-                                },
-                          ),
-                          (route) => false,
-                        );
+                        // go() replaces the whole stack, like pushAndRemoveUntil.
+                        context.go('/login');
                       },
 
                       style: OutlinedButton.styleFrom(

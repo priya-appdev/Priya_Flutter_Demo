@@ -1,11 +1,6 @@
-import 'package:counter_app/app_demo/main/tabbar_screen.dart';
-import 'package:counter_app/app_demo/riverpod/user/user_provider.dart';
-import 'package:counter_app/app_demo/screens/auth/registration_screen.dart';
-import 'package:counter_app/app_demo/screens/auth/forgotpassword_screen.dart';
-import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../riverpod/user/user_provider.dart';
 import '../../widgets/custom_text_fileds.dart';
 
@@ -89,12 +84,7 @@ class _Loginpage extends ConsumerState<LoginpageState> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ForgotpasswordScreen(),
-                            ),
-                          );
+                          context.push('/login/forgot-password');
                         },
                         style: TextButton.styleFrom(
                           overlayColor: Colors.transparent,
@@ -138,8 +128,9 @@ class _Loginpage extends ConsumerState<LoginpageState> {
                           //   email.text , 
                           //   password.text
                           // );
+                          if (!context.mounted) return;
                           if (isLoggedIn){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => TabbarControllerPage()));
+                            context.go('/home');
                           }else{
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Email or Password does not match'))
@@ -200,12 +191,7 @@ class _Loginpage extends ConsumerState<LoginpageState> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegistrationScreen(),
-                            ),
-                          );
+                          context.push('/login/register');
                         },
                         style: TextButton.styleFrom(
                           overlayColor: Colors.transparent,

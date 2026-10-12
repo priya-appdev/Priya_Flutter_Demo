@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../riverpod/user/user_provider.dart';
 import '../../widgets/custom_text_fileds.dart';
-import '../../main/tabbar_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:counter_app/app_demo/riverpod/image/image_provider.dart';
 import 'dart:io';
@@ -600,7 +600,7 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
         title: Text('Registarion'),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
           },
           icon: Icon(Icons.arrow_back),
         ),
@@ -844,12 +844,8 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                           content: Text('Registration successful'),
                         ),
                       );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TabbarControllerPage(),
-                        ),
-                      );
+                      if (!context.mounted) return;
+                      context.go('/home');
                     } catch (e) {
                       ScaffoldMessenger.of(
                         context,

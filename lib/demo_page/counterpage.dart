@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CounterPageState extends StatefulWidget {
+  const CounterPageState({super.key});
+
   @override
   Counterpage createState() => Counterpage();
 }

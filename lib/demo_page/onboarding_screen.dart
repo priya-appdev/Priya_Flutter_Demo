@@ -131,12 +131,12 @@ class _OnboardingScreenPage extends State<OnboardingScreen> {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 15),
+              ),
               child: Text(
                 'Get Started',
                 style: TextStyle(fontFamily: 'Poppins', fontSize: 18),
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 15),
               ),
             ),
           ],

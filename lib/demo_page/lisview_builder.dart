@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ListviewBuilder extends StatelessWidget {
+  const ListviewBuilder({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +12,7 @@ class ListviewBuilder extends StatelessWidget {
         itemBuilder: (context, index) {
           return ListTile(
             leading: Icon(Icons.person),
-            title: Text('User ${index}'),
+            title: Text('User $index'),
             subtitle: Text('Flutter Developer'),
           );
         },
@@ -34,6 +36,7 @@ class ProductList extends StatefulWidget {
     required this.onDataSelected,
   });
 
+  @override
   State<ProductList> createState() => _ProductListPage();
 }
 

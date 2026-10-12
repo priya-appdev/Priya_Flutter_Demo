@@ -149,6 +149,7 @@ class UserNotifier extends StateNotifier<UserState> {
   }
 
   Future<bool> login({required String email, required String password}) async {
+    email = email.trim();
     final user = await _dao.login(email, password);
 
     if (user == null) return false;
@@ -194,6 +195,11 @@ class UserNotifier extends StateNotifier<UserState> {
     );
 
     await _dao.updateUser(updatedUser);
+
+    // Keep the logged-in email in sync so loadUser() finds the user again.
+    final pref = await SharedPreferences.getInstance();
+    await pref.setString(_currentEmailKey, updatedUser.email);
+
     state = updatedUser;
   }
 }

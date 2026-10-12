@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TextfiledExamples extends StatelessWidget {
+  const TextfiledExamples({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,11 +1,8 @@
 import 'package:counter_app/app_demo/database/appdatabase.dart';
 import 'package:counter_app/app_demo/model/cart_model.dart';
-import 'package:counter_app/app_demo/riverpod/cart/cart_provider.dart';
 import 'package:counter_app/app_demo/riverpod/cart/cart_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:counter_app/api_service.dart';
-import 'package:http/http.dart';
 
 class CartNotifire extends StateNotifier<CartState> {
   CartNotifire() : super(CartState());

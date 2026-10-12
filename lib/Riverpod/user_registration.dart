@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../app_demo/riverpod/user/user_provider.dart';
 
 class UserFormPage extends ConsumerStatefulWidget{
+  const UserFormPage({super.key});
+
   @override
   ConsumerState<UserFormPage> createState() => _UserFromPageState();
 }

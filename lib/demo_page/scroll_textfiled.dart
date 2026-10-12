@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ScrollTextfiled extends StatelessWidget {
+  const ScrollTextfiled({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

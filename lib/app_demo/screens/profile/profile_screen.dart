@@ -434,15 +434,32 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState> {
                 ),
                 child: OutlinedButton(
                   onPressed: () async {
+                    // Only change the password when a new one is entered,
+                    // otherwise keep the existing password in the database.
+                    final newPass = newPassword.text.trim();
+                    if (newPass.isNotEmpty) {
+                      String? error;
+                      if (oldPassword.text != ref.read(userProvider).password) {
+                        error = 'Old password is incorrect';
+                      } else if (newPass != retypePassword.text.trim()) {
+                        error = 'New passwords do not match';
+                      }
+                      if (error != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error)),
+                        );
+                        return;
+                      }
+                    }
                     try {
                       await ref
                           .read(userProvider.notifier)
                           .updateUser(
                             firstName: firstName.text,
                             lastName: lastName.text,
-                            email: email.text,
+                            email: email.text.trim(),
                             phone: phoneno.text,
-                            password: oldPassword.text,
+                            password: newPass.isEmpty ? null : newPass,
                             country: country.text,
                             stateprovience: state.text,
                             city: selectedCity ?? "",
@@ -453,7 +470,7 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState> {
                         SnackBar(content: Text('Profile updated')),
                       );
                     } catch (e) {
-                      print('Error while saving ${e}');
+                      print('Error while saving $e');
                     }
                   },
                   style: OutlinedButton.styleFrom(

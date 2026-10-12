@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TextviewWidget extends StatelessWidget {
+  const TextviewWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

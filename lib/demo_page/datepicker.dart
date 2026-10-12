@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class DatepickerScreen extends StatefulWidget {
   @override
   const DatepickerScreen({super.key});
+  @override
   State<DatepickerScreen> createState() => _Datepickerpage();
 }
 
@@ -72,7 +73,7 @@ class _Datepickerpage extends State<DatepickerScreen> {
                   firstDate: DateTime.now(),
                   lastDate: DateTime(2030),
                 );
-                print('date is ${date}');
+                print('date is $date');
                 if (date != null) {
                   datecontroller.text =
                       '${date.day}/${date.month}/${date.year}';
@@ -330,7 +331,7 @@ class _Datepickerpage extends State<DatepickerScreen> {
             ),
             SizedBox(height: 20),
             DropdownButtonFormField<String>(
-              value: selectedCity,
+              initialValue: selectedCity,
               hint: Text(
                 'Select city',
                 style: TextStyle(fontFamily: 'Poppins', fontSize: 15),

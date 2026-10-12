@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ExpandedList extends StatelessWidget {
+  const ExpandedList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

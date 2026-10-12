@@ -1,25 +1,10 @@
-import 'package:counter_app/app_demo/riverpod/product/product_provider.dart';
 import 'package:counter_app/app_demo/riverpod/user/user_provider.dart';
-import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
-import 'demo_page/registration_page.dart';
-import 'demo_page/gridview_builder.dart';
+import 'package:path_provider/path_provider.dart';
 //import 'lisview_builder.dart';
-import 'demo_page/Textview.dart';
-import 'demo_page/scroll_textfiled.dart';
 import 'app_demo/screens/auth/login_screen.dart';
-import 'demo_page/dynamic_list.dart';
-import 'demo_page/onboarding_screen.dart';
-import 'demo_page/reports.dart';
-import 'demo_page/datepicker.dart';
-import 'app_demo/screens/product/product_screen.dart';
-import 'app_demo/screens/auth/registration_screen.dart';
-import 'package:provider/provider.dart';
-import 'model/provider.model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:counter_app/Riverpod/product_page.dart';
 import 'app_demo/main/tabbar_screen.dart';
-import 'app_demo/screens/auth/login_screen.dart';
 
 //-----------------------
 // USING THE PROVIDERS
@@ -41,7 +26,14 @@ import 'app_demo/screens/auth/login_screen.dart';
 // USING THE RIVERPOD
 //-------------------------
 
-void main(){
+
+class AppPaths{
+  static late final String docsDir;
+}
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  AppPaths.docsDir = (await getApplicationCacheDirectory()).path;
   runApp(
     ProviderScope(child: MyApp())
   );

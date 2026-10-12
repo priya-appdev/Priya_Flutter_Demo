@@ -1,9 +1,7 @@
 
 import 'package:counter_app/app_demo/riverpod/product/product_provider.dart';
-import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
 
-import '../app_demo/riverpod/product/product_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 

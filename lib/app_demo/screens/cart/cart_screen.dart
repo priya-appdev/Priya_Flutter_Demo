@@ -62,7 +62,7 @@ class _CartPage extends ConsumerState<CartRiverPodPage> {
 class CartSection extends StatelessWidget {
   final cart;
 
-  const CartSection({required this.cart});
+  const CartSection({super.key, required this.cart});
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +111,7 @@ class CartSection extends StatelessWidget {
 class ProductSection extends StatelessWidget {
   final product;
 
-  const ProductSection({required this.product});
+  const ProductSection({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {

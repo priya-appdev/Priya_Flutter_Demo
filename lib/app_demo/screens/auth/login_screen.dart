@@ -29,6 +29,7 @@ class _Loginpage extends ConsumerState<LoginpageState> {
   TextEditingController password = TextEditingController();
   bool isHiddenPassword = true;
 
+  @override
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -240,6 +241,7 @@ class _Loginpage extends ConsumerState<LoginpageState> {
     if (password.text.isEmpty) return 'Please enter password';
 
     if (password.text.length < 6) return 'Please enter atleast 6 char';
+    return null;
     
   }
 

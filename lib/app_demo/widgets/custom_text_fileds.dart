@@ -13,7 +13,7 @@ class CustomTextFileds extends StatelessWidget{
   final String? Function(String?)? validator;
 
 
-  const CustomTextFileds({
+  const CustomTextFileds({super.key, 
     required this.controller,
     required this.labelText,
     required this.hintText,

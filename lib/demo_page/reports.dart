@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class Reportchart extends StatefulWidget {
   @override
   const Reportchart({super.key});
+  @override
   State<Reportchart> createState() => _ReportPagechart();
 }
 

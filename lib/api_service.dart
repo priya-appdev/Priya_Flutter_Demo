@@ -62,7 +62,7 @@ class ProductApiService{
       );
       return _handleResponse(response);
     }catch (e){
-      throw Exception('GET failed: ${e}');
+      throw Exception('GET failed: $e');
     }
   }
 
@@ -77,7 +77,7 @@ class ProductApiService{
       );
       return _handleResponse(response);
     }catch (e){
-      throw Exception('POST faile:${e}');
+      throw Exception('POST faile:$e');
     }
   }
 
@@ -92,7 +92,7 @@ class ProductApiService{
       );
       return _handleResponse(response);
     }catch (e){
-      throw Exception('PUT failed:${e}');
+      throw Exception('PUT failed:$e');
     }
   }
 
@@ -106,7 +106,7 @@ class ProductApiService{
       );
       return _handleResponse(response);
     }catch (e){
-      throw Exception('DELETE failed:${e}');
+      throw Exception('DELETE failed:$e');
     }
   }
 

@@ -9,6 +9,7 @@ import '../../main/tabbar_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:counter_app/app_demo/riverpod/image/image_provider.dart';
 import 'dart:io';
+import 'package:counter_app/app_demo/services/image_picker_service.dart';
 
 // class RegistrationDemopage extends StatefulWidget {
 //   @override
@@ -20,6 +21,7 @@ import 'dart:io';
 class RegistrationScreen extends ConsumerStatefulWidget {
   @override
   const RegistrationScreen({super.key});
+  @override
   ConsumerState<RegistrationScreen> createState() => _RegistrationPageDemo();
 }
 
@@ -831,8 +833,9 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                             city: selectedCity ?? "",
                             streetAddress: streetAddress.text,
                             message: message.text,
-                            profileImagePath:
-                                imageState.selectedImage?.path ?? "",
+                            profileImagePath: imageState.selectedImage == null ? "" : await ImagePickerService().persistFile(imageState.selectedImage!),
+                            // profileImagePath:
+                            //     imageState.selectedImage?.path ?? "",
                           );
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -928,13 +931,15 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
 
     if (password.text.isEmpty) return 'Please enter password';
 
-    if (password.text.length < 6)
+    if (password.text.length < 6) {
       return 'Password must be at last 6 characters';
+    }
 
     if (retypepassword.text.isEmpty) return 'Please enter retype password';
 
-    if (retypepassword.text != password.text)
+    if (retypepassword.text != password.text) {
       return 'Password and retype password does not match';
+    }
 
     if (contryName.text.isEmpty) return 'Please enter country name';
 
@@ -943,5 +948,6 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
     if (streetAddress.text.isEmpty) return 'Please enter street address';
 
     if (message.text.isEmpty) return 'Please enter messge';
+    return null;
   }
 }

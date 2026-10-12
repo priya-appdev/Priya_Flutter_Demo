@@ -5,6 +5,7 @@ import '../../widgets/custom_text_fileds.dart';
 class CreateNewPasswordState extends StatefulWidget {
   @override
   const CreateNewPasswordState({super.key});
+  @override
   State<CreateNewPasswordState> createState() => Createnewpassword();
 }
 

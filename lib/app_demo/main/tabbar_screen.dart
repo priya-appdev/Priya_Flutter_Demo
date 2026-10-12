@@ -9,6 +9,8 @@ import '../screens/profile/profile_screen.dart';
 
 
 class TabbarControllerPage extends ConsumerStatefulWidget {
+  const TabbarControllerPage({super.key});
+
 
   @override
   ConsumerState<TabbarControllerPage> createState() => _TabBarControllerPage();
@@ -63,7 +65,7 @@ class TabbarControllerPage extends ConsumerStatefulWidget {
         bottomNavigationBar: TabBar(
           controller: _tabController,
           indicatorColor: Colors.transparent,
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
           labelColor: Colors.amber,
           unselectedLabelColor: Colors.green,
           tabs: [

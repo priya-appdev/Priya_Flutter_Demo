@@ -2,6 +2,8 @@ import 'package:counter_app/demo_page/Expanded.dart';
 import 'package:flutter/material.dart';
 
 class ListviewExample extends StatelessWidget {
+  const ListviewExample({super.key});
+
   @override
   Widget build(BuildContext contexxt) {
     return Scaffold(
@@ -59,7 +61,7 @@ class ListviewExample extends StatelessWidget {
             ),
           ),
 
-          Container(
+          SizedBox(
             width: 200,
             child: ListTile(
               title: Text('Item1'),
@@ -69,7 +71,7 @@ class ListviewExample extends StatelessWidget {
           ),
 
           Divider(height: 1, color: Colors.green),
-          Container(
+          SizedBox(
             width: 200,
             child: ListTile(
               title: Text('Item1'),
@@ -78,7 +80,7 @@ class ListviewExample extends StatelessWidget {
             ),
           ),
           Divider(height: 1, color: Colors.green),
-          Container(
+          SizedBox(
             width: 200,
             child: ListTile(
               title: Text('Item1'),
@@ -87,7 +89,7 @@ class ListviewExample extends StatelessWidget {
             ),
           ),
           Divider(height: 1, color: Colors.green),
-          Container(
+          SizedBox(
             width: 200,
             child: ListTile(
               title: Text('Item1'),

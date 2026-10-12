@@ -1,11 +1,6 @@
-import 'package:counter_app/demo_page/ProfilePage.dart';
-import 'package:counter_app/api_service.dart';
-import 'package:counter_app/model/provider.model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:counter_app/app_demo/riverpod/product/product_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:counter_app/app_demo/riverpod/product/product_notifier.dart';
 import 'package:counter_app/app_demo/widgets/shimmer_loader.dart';
 
 // class ProductList extends StatefulWidget{

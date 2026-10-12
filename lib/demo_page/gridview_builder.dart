@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class GridviewBuilder extends StatelessWidget {
+  const GridviewBuilder({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -305,6 +305,12 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState> {
                     onTap: () {
                       setState(() {
                         showPassword = !showPassword;
+                        // Hiding the fields cancels the password change.
+                        if (!showPassword) {
+                          oldPassword.clear();
+                          newPassword.clear();
+                          retypePassword.clear();
+                        }
                       });
                     },
                     child: Container(
@@ -434,14 +440,27 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState> {
                 ),
                 child: OutlinedButton(
                   onPressed: () async {
-                    // Only change the password when a new one is entered,
+                    // Only change the password when "Show password" is ticked
+                    // and something is typed in the password fields,
                     // otherwise keep the existing password in the database.
                     final newPass = newPassword.text.trim();
-                    if (newPass.isNotEmpty) {
+                    final changePassword = showPassword &&
+                        (oldPassword.text.isNotEmpty ||
+                            newPass.isNotEmpty ||
+                            retypePassword.text.trim().isNotEmpty);
+                    if (changePassword) {
                       String? error;
                       if (oldPassword.text != ref.read(userProvider).password) {
                         error = 'Old password is incorrect';
-                      } else if (newPass != retypePassword.text.trim()) {
+                      } else if (newPass.isEmpty) {
+                        error = 'Please enter a new password';
+                      } else if (newPass.length < 6){
+                        error = "New password shold be atleast 6 char";
+                      }else if (retypePassword.text.isEmpty){
+                        error = "Please enter retype passwored";
+                      }else if (retypePassword.text.length < 6){
+                        error = "Retype password should be atleast 6 char";
+                      }else if (newPass != retypePassword.text.trim()) {
                         error = 'New passwords do not match';
                       }
                       if (error != null) {
@@ -459,13 +478,20 @@ class _ProfileScreen extends ConsumerState<ProfileScreenState> {
                             lastName: lastName.text,
                             email: email.text.trim(),
                             phone: phoneno.text,
-                            password: newPass.isEmpty ? null : newPass,
+                            // null keeps the saved password (see copyWith).
+                            password: changePassword ? newPass : null,
                             country: country.text,
                             stateprovience: state.text,
                             city: selectedCity ?? "",
                             streetaddress: streetaddress.text,
                           );
                       if (!mounted) return;
+                      setState(() {
+                        showPassword = false;
+                        oldPassword.clear();
+                        newPassword.clear();
+                        retypePassword.clear();
+                      });
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Profile updated')),
                       );

@@ -820,6 +820,7 @@ class _RegistrationPageDemo extends ConsumerState<RegistrationScreen> {
                           const Center(child: CircularProgressIndicator()),
                     );
                     try {
+                      print('password is $password.text');
                       await ref
                           .read(userProvider.notifier)
                           .setUser(

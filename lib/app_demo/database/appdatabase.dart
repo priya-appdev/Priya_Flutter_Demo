@@ -4,6 +4,13 @@ import 'package:counter_app/app_demo/riverpod/user/user_state.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+
+// conflictAlgorithm are used for for when you try to insert a product that already exists in the database with same primary key and unique constrain value.
+// here we are using batch to insert multiple data into SQLite in single transition not used insert because it will insert entry one by one because it doesn't execute them immediately
+// batch commitr are used for executes all queued operation together 
+// Roll backs the transition when conflict occurs.
+// CASCADE to automatically delete related from the child table when a record is deleted from the parent table
+
 class AppDatabase {
   AppDatabase._();
   static final AppDatabase instance = AppDatabase._();
@@ -116,6 +123,7 @@ class ProductDao {
         'products',
         p.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
+        
       );
     }
     await batch.commit(noResult: true);

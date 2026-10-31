@@ -52,7 +52,10 @@ class ProductApiService{
 
 //GENERIC GET
 
+  //Future is used to handle asynchronous operation , meaning operation that take some time to complete without booking the rest of your application.
+
   static Future<dynamic> getRequest(String endPoint) async{
+    print('$baseUrl$endPoint');
     try{
       final response = await http.get(
         Uri.parse('$baseUrl$endPoint'),

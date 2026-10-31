@@ -1,7 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:counter_app/app_demo/riverpod/user/user_state.dart';
-import 'package:counter_app/app_demo/database/user_dao.dart';
+import 'package:counter_app/app_demo/database/user_dao.dart'; 
+
+/* Terms to Remember*/
+// ShredPreference is used to store small amount of data locally on user's device in the form of key-value pairs.
+// Think of it as a small storage system where you save data so that it remains available even after the user closes and reopens the application. Instead of asking the user every time, you can save these values locally.
+// It stores data in key-value pairs.
 
 // class UserNotifier extends StateNotifier<UserState>{
 //   UserNotifier() : super(UserState());

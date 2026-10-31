@@ -116,12 +116,28 @@ class ProductRiverpodPage extends ConsumerStatefulWidget {
 }
 
 class ProductPage extends ConsumerState<ProductRiverpodPage> {
+
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
       ref.read(productProvider.notifier).fetchProduct();
     });
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll(){
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200){
+      ref.read(productProvider.notifier).loadMore();
+    }
+  }
+
+  @override
+  void dispose(){
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -153,9 +169,28 @@ class ProductPage extends ConsumerState<ProductRiverpodPage> {
           ? const ProductShimmer()
           : RefreshIndicator(
               child: ListView.builder(
+                controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: productState.products.length,
+                itemCount: productState.products.length + 1,
                 itemBuilder: (context, index) {
+                  if (index == productState.products.length){
+                    if(productState.isLoadingMore){
+                      return const Padding(padding: EdgeInsets.all(16),
+                      child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                     if (!productState.hasMore){
+                    return const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Center(
+                        child: Text('No More Products',style: TextStyle(fontFamily: 'Poppins'),),
+                      ),
+                    );
+                    
+                  }
+                  return const SizedBox.shrink();
+                  }
+                 
                   final product = productState.products[index];
                   return Card(
                     margin: EdgeInsets.all(16),
